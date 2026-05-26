@@ -21,7 +21,7 @@
   --ai:#2D7FF9;--data:#10B981;--built:#F5A623;
   --sans:'DM Sans',sans-serif;--mono:'DM Mono',monospace;--serif:'Fraunces',serif;}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:var(--sans);background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;
+body{font-family:var(--sans);background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;
   background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px;}
 .top{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content:space-between;align-items:center;gap:16px;
   padding:14px 26px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
@@ -485,7 +485,7 @@ function pack(mode){
   }
   let maxY=0;
   nodes.forEach(n=>{n.x=Math.max(M,Math.min(W-n.w-M,n.x));n.y=Math.max(72,n.y);
-    n.el.style.left=n.x+'px';n.el.style.top=n.y+'px';n.el.style.transform=`rotate(${n.rot}deg)`;
+    n.el.style.display='';n.el.style.left=n.x+'px';n.el.style.top=n.y+'px';n.el.style.transform=`rotate(${n.rot}deg)`;
     n.el.style.opacity='1';n.el.style.pointerEvents='';
     n.el.style.zIndex=n.el.classList.contains('tcard')?80:20;maxY=Math.max(maxY,n.y+n.h);});
   stage.style.height=(maxY+120)+'px';
@@ -493,7 +493,7 @@ function pack(mode){
 /* tidy view — file every key-image into its project card (folder feel) */
 function tidy(){
   const W=Math.min(stage.clientWidth,1760), cardW=230, gap=36;
-  const cols=Math.max(1,Math.floor((W+gap)/(cardW+gap))), gridW=cols*cardW+(cols-1)*gap, x0=(W-gridW)/2;
+  const cols=W<560?1:Math.max(1,Math.floor((W+gap)/(cardW+gap))), gridW=cols*cardW+(cols-1)*gap, x0=(W-gridW)/2;
   const cards=tiles.filter(t=>t.el.classList.contains('tcard')).sort((a,b)=>((a.pi==null?-1:a.pi)-(b.pi==null?-1:b.pi)));
   const colH=new Array(cols).fill(92);
   cards.forEach(t=>{
@@ -501,7 +501,7 @@ function tidy(){
     const cw=t.el.offsetWidth, x=x0+c*(cardW+gap)+(cardW-cw)/2, y=colH[c];   // centre each card in its column → even gaps
     t.el.style.left=x+'px';t.el.style.top=y+'px';t.el.style.transform='rotate(0deg)';t.el.style.zIndex=80;t.el.style.opacity='1';
     tiles.forEach(s=>{if(s.el.classList.contains('tcard'))return;if(s.el.dataset.pi!=t.pi)return;
-      s.el.style.left=(x+cw/2-26)+'px';s.el.style.top=(y+44)+'px';s.el.style.transform='scale(.05)';s.el.style.opacity='0';s.el.style.pointerEvents='none';});
+      s.el.style.display='none';s.el.style.opacity='0';s.el.style.pointerEvents='none';});
     colH[c]+=t.el.offsetHeight+gap;
   });
   stage.style.height=(Math.max(...colH)+120)+'px';
@@ -515,7 +515,7 @@ function flow(){
     if(isImg)el.style.width=colW+'px';
     const w=el.offsetWidth;
     el.style.left=(cx-w/2)+'px';el.style.top=y+'px';el.style.transform='rotate(0deg)';
-    el.style.opacity='1';el.style.pointerEvents='';el.style.zIndex=isImg?20:80;
+    el.style.display='';el.style.opacity='1';el.style.pointerEvents='';el.style.zIndex=isImg?20:80;
     y+=el.offsetHeight+16;
   });
   stage.style.height=(y+70)+'px';
@@ -595,7 +595,7 @@ let mode='featured';
 const NARROW=700;                    // below this the board melts into a vertical flow
 function apply(m){mode=m;
   document.getElementById('bTidy').classList.toggle('on',m==='tidy');
-  if(stage.clientWidth<NARROW&&m!=='tidy'){flow();return;}
+  if(stage.clientWidth<NARROW){tidy();return;}   // phones/narrow: tidy card list — tap a card → its gallery + slides
   if(m==='tidy')tidy();else pack(m);}
 document.getElementById('bTidy').onclick=()=>apply(mode==='tidy'?'featured':'tidy');
 
@@ -612,7 +612,7 @@ let entranced=false;
 function entrance(){
   if(entranced)return;entranced=true;
   stage.classList.add('booting');void stage.offsetWidth;   // snap to packed positions, kill the slide
-  const t=[...stage.querySelectorAll('.card,.shot')].sort((a,b)=>(a.offsetTop-b.offsetTop)||(a.offsetLeft-b.offsetLeft));
+  const t=[...stage.querySelectorAll('.card,.shot')].filter(el=>el.style.opacity!=='0').sort((a,b)=>(a.offsetTop-b.offsetTop)||(a.offsetLeft-b.offsetLeft));
   t.forEach((el,i)=>{el.style.animationDelay=(i*20)+'ms';el.classList.add('anim-in');
     el.addEventListener('animationend',()=>{el.classList.remove('anim-in');el.style.animationDelay='';},{once:true});});
   stage.classList.remove('booting');
