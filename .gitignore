@@ -1,0 +1,15 @@
+.DS_Store
+
+# local working files — never committed
+_assets_src/
+_src/
+_proto/
+.claude/
+_*.html
+
+# abandoned prototype experiments (kept locally, not shipped)
+fairness-deck.html
+fairness-panel.html
+fairness-tradeoff.html
+
+# committed & served by GitHub Pages: index.html, assets/, docs/

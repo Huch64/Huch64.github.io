@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haocheng Wang</title>
+<meta name="description" content="An explorer drawn to structured, constraint-guided learning — selected work by Haocheng Wang.">
+<link rel="icon" href="favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://huch64.github.io/">
+<meta property="og:title" content="Haocheng Wang">
+<meta property="og:description" content="An explorer drawn to structured, constraint-guided learning.">
+<meta property="og:image" content="https://huch64.github.io/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Haocheng Wang">
+<meta name="twitter:description" content="An explorer drawn to structured, constraint-guided learning.">
+<meta name="twitter:image" content="https://huch64.github.io/og-cover.png">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111;--mid:#666;--light:#A6A6A6;--line:#ECECEC;--grid:#E7EEF9;
+  --ai:#2D7FF9;--data:#10B981;--built:#F5A623;
+  --sans:'DM Sans',sans-serif;--mono:'DM Mono',monospace;--serif:'Fraunces',serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--sans);background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px;}
+.top{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:14px 26px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+.wordmark{font-family:var(--serif);font-weight:600;font-size:23px;letter-spacing:-.01em;}
+.wordmark .i{font-style:italic;font-weight:400;}
+.controls{display:flex;gap:14px;align-items:center;}
+.legend{display:flex;gap:13px;font-family:var(--mono);font-size:11px;color:var(--mid);align-items:center;}
+.legend span{display:flex;align-items:center;gap:6px;cursor:default;}
+.legend i{width:9px;height:9px;border-radius:50%;}
+.btns{display:flex;gap:7px;}
+.btns button{font-family:var(--mono);font-size:11px;color:var(--ink);background:#fff;border:1px solid var(--line);
+  padding:5px 11px;border-radius:5px;cursor:pointer;transition:all .15s;}
+.btns button:hover{border-color:var(--ink);}
+.btns button.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+
+.stage{position:relative;width:100%;max-width:1760px;margin:0 auto;min-height:100vh;}
+
+.card{position:absolute;transition:left .6s cubic-bezier(.2,.7,.3,1),top .6s cubic-bezier(.2,.7,.3,1),width .6s cubic-bezier(.2,.7,.3,1),transform .5s cubic-bezier(.2,.7,.3,1),opacity .45s,box-shadow .25s;}
+.foot{text-align:center;font-family:var(--mono);font-size:11px;color:var(--light);padding:34px 0 54px;letter-spacing:.02em;}
+.foot a{color:var(--mid);text-decoration:none;}.foot a:hover{color:var(--ink);}
+.booting .card,.booting .shot{transition:none!important;}
+@keyframes tileIn{from{opacity:0;transform:translateY(16px) scale(.965);}to{opacity:1;transform:none;}}
+.anim-in{animation:tileIn .55s cubic-bezier(.2,.7,.3,1) both;}
+@media(prefers-reduced-motion:reduce){.anim-in{animation:none!important;}}
+/* profile + project text cards */
+.tcard{width:212px;background:#fff;border:1px solid var(--line);border-radius:3px;padding:13px 14px 12px;box-shadow:0 8px 22px rgba(0,0,0,.07);z-index:80;}
+.tcard.profile{width:230px;}
+.tcard.proj{width:182px;}
+.tcard .name{font-family:var(--serif);font-size:24px;font-weight:600;line-height:1.04;}
+.tcard .role0{font-size:12.5px;color:var(--mid);margin-top:6px;line-height:1.45;}
+.tcard .meta{margin-top:11px;font-size:11px;color:#444;line-height:1.55;border-top:1px solid var(--line);padding-top:10px;}
+.tcard .meta b{font-weight:600;}
+.hd{display:flex;align-items:center;gap:9px;}
+.hd canvas{image-rendering:pixelated;width:34px;height:34px;flex:0 0 auto;}
+.hd .tt{font-size:15px;font-weight:700;line-height:1.1;}
+.hd .sub{font-size:11px;color:#c4c4c4;line-height:1.3;margin-top:3px;}
+.hd .hemoji{font-size:26px;line-height:1;flex:0 0 auto;}
+.hd .cc{font-family:var(--mono);font-size:8.5px;color:var(--light);text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:5px;margin-top:2px;}
+.hd .cc .dot{width:7px;height:7px;border-radius:50%;}
+.intro{font-size:11.5px;color:#444;line-height:1.5;margin-top:9px;}
+.intro b{font-weight:600;color:var(--ink);}
+.role{font-family:var(--mono);font-size:9.5px;color:var(--mid);margin-top:8px;}
+.role::before{content:"◆ ";color:var(--light);}
+.stack{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;}
+.stack span{font-family:var(--mono);font-size:9.5px;font-weight:500;color:var(--ink);background:#F4F3F0;border-radius:3px;padding:3px 7px;}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px;}
+.links a{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10.5px;color:var(--ink);font-weight:500;text-decoration:none;}
+.links a:hover{text-decoration:underline;}
+.links a.icn{border:1px solid var(--line);padding:4px 8px;border-radius:4px;font-weight:400;}
+.links a.icn:hover{border-color:var(--ink);text-decoration:none;}
+.links canvas{image-rendering:pixelated;width:13px;height:13px;}
+
+.shot{position:absolute;background:#fff;padding:5px;border:1px solid var(--line);border-radius:3px;line-height:0;overflow:hidden;
+  box-shadow:0 5px 16px rgba(0,0,0,.10);cursor:pointer;
+  transition:left .6s cubic-bezier(.2,.7,.3,1),top .6s cubic-bezier(.2,.7,.3,1),transform .45s cubic-bezier(.2,.7,.3,1),box-shadow .25s;}
+.shot img,.shot video{width:100%;height:auto;display:block;border-radius:1px;}
+.shot:hover{transform:rotate(0deg) scale(1.06)!important;z-index:200;box-shadow:0 20px 46px rgba(0,0,0,.22);}
+.tcard:hover{transform:rotate(0deg) scale(1.035)!important;z-index:140;box-shadow:0 20px 46px rgba(0,0,0,.28);}
+.hl{box-shadow:0 0 0 2px #E9DE2E,0 8px 20px rgba(0,0,0,.16)!important;}
+/* link chips — small black cards for Demo / Code / PDF, orbiting a project */
+.chip{position:absolute;display:inline-flex;align-items:center;gap:7px;text-decoration:none;white-space:nowrap;
+  background:#161616;color:#fff;font-family:var(--mono);font-size:11px;padding:8px 12px;border-radius:7px;
+  box-shadow:0 6px 16px rgba(0,0,0,.18);cursor:pointer;
+  transition:left .6s cubic-bezier(.2,.7,.3,1),top .6s cubic-bezier(.2,.7,.3,1),transform .4s,box-shadow .25s;}
+.chip canvas{image-rendering:pixelated;width:15px;height:15px;}
+.chip:hover{transform:rotate(0deg) scale(1.07)!important;z-index:200;box-shadow:0 16px 34px rgba(0,0,0,.26);}
+.shot,.chip{transition:left .6s cubic-bezier(.2,.7,.3,1),top .6s cubic-bezier(.2,.7,.3,1),transform .45s,box-shadow .25s,opacity .5s;}
+.vbadge{position:absolute;top:8px;left:8px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.62);color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;z-index:3;}
+.shotcap{position:absolute;left:0;right:0;bottom:0;padding:16px 9px 8px;background:linear-gradient(transparent,rgba(15,17,20,.84));color:#fff;font-size:10.5px;line-height:1.35;opacity:0;transition:opacity .25s;pointer-events:none;border-radius:0 0 3px 3px;}
+.shot:hover .shotcap{opacity:1;}
+.tcard .links{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:11px;}
+.tcard .links a{display:flex;align-items:center;gap:5px;}
+.tcard .links a.icn{justify-content:center;padding:4px 6px;font-size:10px;}
+.tcard .links a.icn canvas{width:12px;height:12px;}
+.tcard .links a canvas{image-rendering:pixelated;width:13px;height:13px;}
+/* solid black cards — the one structural colour; colour else only from logos / images / dot */
+.tcard{color:#fff;border:none;border-radius:3px;
+  background-color:#161616;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  background-size:140px 140px;background-blend-mode:soft-light;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 50px rgba(0,0,0,.45), 0 12px 28px rgba(0,0,0,.24);}
+.tcard .name,.tcard .hd .tt,.tcard .meta b,.tcard .intro b{color:#fff;}
+.tcard .role0{color:#bdbdbd;}
+.tcard .meta{color:#d2d2d2;border-top-color:rgba(255,255,255,.15);}
+.tcard .hd .cc{color:#9a9a9a;}
+.tcard .intro{color:#d4d4d4;}
+.tcard .role{color:#aaa;}.tcard .role::before{color:#6f6f6f;}
+.tcard .stack span{background:rgba(255,255,255,.13);color:#fff;}
+.tcard .links a{color:#fff;}
+.tcard .links a.icn{border-color:rgba(255,255,255,.28);}
+.tcard .links a.icn:hover{border-color:#fff;}
+
+/* gallery lightbox */
+.gov{position:fixed;inset:0;background:rgba(250,250,248,.82);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+  z-index:500;opacity:0;pointer-events:none;transition:opacity .25s;overflow-y:auto;}
+.gov.open{opacity:1;pointer-events:auto;}
+.gwrap{max-width:880px;margin:0 auto;padding:60px 24px 80px;}
+.ghead{display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:22px;}
+.ghead canvas{image-rendering:pixelated;width:42px;height:42px;flex:0 0 auto;}
+.ghead h2{font-family:var(--serif);font-size:26px;font-weight:600;}
+.ghead .gemoji{font-size:32px;line-height:1;flex:0 0 auto;}
+.ghead .gsub{font-size:13px;color:var(--mid);margin-top:3px;font-weight:500;}
+.ghead .gi{font-size:13px;color:var(--mid);margin-top:6px;line-height:1.62;}
+.ghead .gi b{color:var(--ink);font-weight:600;}
+.ghead .grole{font-family:var(--mono);font-size:11px;color:var(--mid);margin-top:8px;}
+.ghead .gstack{margin-top:9px;display:flex;flex-wrap:wrap;gap:5px;}
+.ghead .gstack span{font-family:var(--mono);font-size:9.5px;font-weight:500;background:#F1F0EC;border-radius:3px;padding:3px 7px;}
+.ghead .glinks{margin-top:10px;display:flex;gap:12px;}
+.ghead .glinks a{font-family:var(--mono);font-size:11px;color:var(--ink);font-weight:500;text-decoration:none;}
+.gfigs{column-count:2;column-gap:22px;}
+@media(max-width:640px){.gfigs{column-count:1;}}
+.gfig{break-inside:avoid;margin-bottom:22px;cursor:pointer;}
+.gfig .gimg{transition:box-shadow .2s,transform .2s;}
+.gfig:hover .gimg{box-shadow:0 14px 32px rgba(0,0,0,.14);transform:translateY(-2px);}
+.gfig .gimg{border:1px solid var(--line);border-radius:5px;overflow:hidden;background:#fff;line-height:0;box-shadow:0 8px 22px rgba(0,0,0,.06);}
+.gfig img,.gfig video{width:100%;height:auto;display:block;}
+.gfig figcaption{margin-top:8px;font-size:12.5px;color:var(--mid);line-height:1.5;}
+.gfig figcaption .fn{font-family:var(--mono);font-size:10px;color:var(--light);margin-right:7px;}
+.gclose{position:fixed;top:18px;right:22px;z-index:510;font-family:var(--mono);font-size:14px;color:#fff;background:rgba(0,0,0,.6);
+  width:30px;height:30px;border:none;border-radius:50%;cursor:pointer;}
+/* fixed prev/next arrows — never move with image size */
+.snav-side{position:fixed;top:50%;transform:translateY(-50%);z-index:520;width:46px;height:46px;border:none;border-radius:50%;cursor:pointer;
+  background:rgba(20,20,20,.5);color:#fff;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.snav-side:hover{background:rgba(20,20,20,.85);}
+.snav-side.prev{left:24px;}.snav-side.next{right:24px;}
+@media(max-width:640px){.snav-side{width:38px;height:38px;}.snav-side.prev{left:10px;}.snav-side.next{right:10px;}}
+.gdocsec{margin-top:6px;}
+.gdivider{text-align:center;font-family:var(--mono);font-size:11px;color:var(--light);letter-spacing:.04em;
+  margin:38px 0 16px;padding-top:18px;border-top:1px solid var(--line);}
+.gdoc{margin-top:24px;display:flex;flex-direction:column;gap:14px;}
+.cvwrap{max-width:820px;margin:0 auto;}
+.cvframe{width:100%;height:88vh;border:1px solid var(--line);border-radius:6px;background:#fff;box-shadow:0 14px 40px rgba(0,0,0,.10);}
+.gdoc .docpg{width:100%;display:block;border:1px solid var(--line);border-radius:4px;box-shadow:0 6px 18px rgba(0,0,0,.06);}
+/* single-image view */
+.single{max-width:960px;margin:0 auto;padding:58px 24px 70px;text-align:center;}
+.single .simg{display:inline-block;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#fff;box-shadow:0 14px 40px rgba(0,0,0,.10);line-height:0;}
+.single .simg img,.single .simg video{max-width:100%;max-height:76vh;display:block;}
+.single .scap{font-size:14px;color:#333;margin:16px auto 0;line-height:1.55;max-width:620px;}
+.single .sfoot{display:flex;justify-content:center;align-items:center;gap:18px;margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--mid);flex-wrap:wrap;}
+.single .sfoot .sp{font-weight:500;color:var(--ink);}
+.single .snav{display:flex;align-items:center;gap:9px;}
+.single .snav button{font-family:var(--mono);font-size:13px;background:none;border:1px solid var(--line);border-radius:4px;width:27px;height:24px;cursor:pointer;}
+.single .snav button:hover{border-color:var(--ink);}
+.single .slinks a{color:var(--ink);text-decoration:none;}.single .slinks a:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="wordmark">huch<span class="i">'s</span> index</div>
+  <div class="controls">
+    <div class="btns"><button id="bTidy">tidy ▦</button></div>
+  </div>
+</div>
+
+<div class="stage" id="stage"></div>
+<footer class="foot">Haocheng Wang · 2026 · <a href="https://github.com/Huch64" target="_blank">GitHub ↗</a></footer>
+<div class="gov" id="gov"><button class="gclose" onclick="closeG()">✕</button><div class="gwrap" id="gwrap"></div></div>
+
+<script src="assets/board-manifest.js"></script>
+<script>
+function px(c,x,y,cl){c.fillStyle=cl;c.fillRect(x,y,1,1);}
+function R(c,x,y,w,h,cl){c.fillStyle=cl;c.fillRect(x,y,w,h);}
+function OB(c,x,y,w,h,cl){c.fillStyle='#2b2b2b';c.fillRect(x,y,w,h);c.fillStyle=cl;c.fillRect(x+1,y+1,w-2,h-2);} // outlined box — dark 1px edge for the game-sprite look
+const ICON={
+ prism(c){c.fillStyle='#34608F';c.beginPath();c.moveTo(5,2);c.lineTo(10,7);c.lineTo(5,12);c.closePath();c.fill();
+   R(c,2,7,3,1,'#dfe6ef');['#E8654A','#F2A30C','#F2D80C','#4A8C6F','#3A6EA5','#7B5EA7'].forEach((col,i)=>R(c,10,4+i,5,1,col));},
+ bed(c){R(c,1,4,14,8,'#EFD9C4');R(c,1,7,14,5,'#E8654A');R(c,1,6,3,6,'#BE4630');R(c,4,5,8,2,'#FBF7F1');R(c,11,2,3,3,'#5FB389');R(c,12,1,1,1,'#5FB389');},
+ scale(c){R(c,7,2,2,11,'#B98E1E');R(c,2,3,12,1,'#D6A828');R(c,2,3,1,4,'#D6A828');R(c,13,3,1,4,'#D6A828');R(c,0,7,4,1,'#F2CE4A');R(c,12,7,4,1,'#F2CE4A');R(c,5,13,6,1,'#B98E1E');R(c,6,1,4,1,'#D6A828');},
+ bolt(c){R(c,2,2,3,3,'#7B5EA7');c.fillStyle='#F2C20C';c.beginPath();c.moveTo(9,1);c.lineTo(4,8);c.lineTo(8,8);c.lineTo(6,15);c.lineTo(13,6);c.lineTo(9,6);c.closePath();c.fill();},
+ heart(c){R(c,2,3,4,2,'#3F7E5C');R(c,9,3,4,2,'#3F7E5C');R(c,1,4,13,3,'#7BC4A0');R(c,2,7,11,2,'#5FB389');R(c,3,9,9,2,'#3F7E5C');R(c,5,11,5,1,'#2E6647');R(c,6,12,3,1,'#2E6647');R(c,7,13,1,1,'#2E6647');},
+ car(c){R(c,3,7,11,3,'#C97B3A');R(c,4,4,7,3,'#D98C4A');R(c,5,5,2,2,'#BFE3F2');R(c,8,5,2,2,'#BFE3F2');R(c,2,8,12,1,'#9C5E28');R(c,3,10,3,3,'#2A2A2A');R(c,10,10,3,3,'#2A2A2A');},
+ map(c){R(c,1,1,14,14,'#ECE4CC');c.strokeStyle='#2F8F8F';c.lineWidth=1.6;c.beginPath();c.moveTo(3,1);c.bezierCurveTo(5,5,9,6,7,10);c.lineTo(8,15);c.stroke();R(c,10,3,3,3,'#E8654A');R(c,3,11,2,2,'#F2C20C');R(c,11,11,2,2,'#3A6EA5');},
+ grid(c){const C=['#C0392B','#3A6EA5','#4A8C6F','#F2C20C'];for(let gx=0;gx<3;gx++)for(let gy=0;gy<3;gy++)R(c,1+gx*5,1+gy*5,4,4,C[(gx*3+gy)%4]);},
+ bldg(c){R(c,2,2,12,13,'#B7A999');R(c,2,2,12,1,'#857A6A');for(let y=4;y<14;y+=3)for(let x=4;x<13;x+=3)R(c,x,y,2,2,'#FAF6F0');R(c,7,12,3,3,'#6E6456');},
+ peak(c){c.fillStyle='#8A98A8';c.beginPath();c.moveTo(8,1);c.lineTo(15,13);c.lineTo(1,13);c.closePath();c.fill();c.fillStyle='#fff';c.beginPath();c.moveTo(8,1);c.lineTo(11,6);c.lineTo(5,6);c.closePath();c.fill();R(c,6,7,4,1,'#F2C20C');},
+ gh(c){R(c,3,2,10,11,'#24292F');R(c,5,5,2,2,'#fff');R(c,9,5,2,2,'#fff');R(c,5,9,6,2,'#fff');R(c,6,13,1,2,'#24292F');R(c,9,13,1,2,'#24292F');},
+ mail(c){R(c,2,4,12,9,'#3A6EA5');c.fillStyle='#dfe9f5';c.beginPath();c.moveTo(2,4);c.lineTo(8,9);c.lineTo(14,4);c.lineTo(14,5);c.lineTo(8,10);c.lineTo(2,5);c.closePath();c.fill();},
+ cam(c){R(c,1,5,14,9,'#E14B6A');R(c,4,3,4,2,'#E14B6A');R(c,5,8,6,6,'#fff');R(c,6,9,4,4,'#C23552');R(c,12,6,2,1,'#fff');},
+ play(c){c.fillStyle='#fff';c.beginPath();c.moveTo(4,3);c.lineTo(13,8);c.lineTo(4,13);c.closePath();c.fill();},
+ doc(c){R(c,3,2,10,12,'#fff');R(c,10,2,3,3,'#cfcfcf');R(c,5,6,6,1,'#8a8a8a');R(c,5,8,6,1,'#8a8a8a');R(c,5,10,4,1,'#8a8a8a');},
+ ext(c){c.strokeStyle='#fff';c.lineWidth=1.5;c.beginPath();c.moveTo(4,12);c.lineTo(12,4);c.moveTo(7,4);c.lineTo(12,4);c.lineTo(12,9);c.stroke();},
+};
+function mkIcon(ic,size){const cv=document.createElement('canvas');cv.width=16;cv.height=16;ICON[ic](cv.getContext('2d'));cv.style.width=size+'px';cv.style.height=size+'px';return cv;}
+// higher-res (32×32) CONCRETE per-project logos — used for the card centre + gallery header
+const LOGO={   // 24×24 concrete game-sprite logos (dark-outlined via OB)
+ // PRISM — a glass prism splitting a white ray into a rainbow
+ prism(c){R(c,0,10,7,2,'#bdbdbd');
+   c.fillStyle='#2b2b2b';c.beginPath();c.moveTo(6,3);c.lineTo(6,21);c.lineTo(19,12);c.closePath();c.fill();
+   c.fillStyle='#bcd2e8';c.beginPath();c.moveTo(8,6);c.lineTo(8,18);c.lineTo(16,12);c.closePath();c.fill();
+   ['#E8654A','#F2A30C','#F2D80C','#3F9E6B','#3A6EA5','#7B5EA7'].forEach((col,i)=>R(c,18,7+i*2,6,2,col));},
+ // My Little Bedroom — a bed
+ bed(c){OB(c,2,9,20,11,'#8a6a49');R(c,4,13,16,5,'#EFD9C4');R(c,4,13,16,2,'#E8654A');
+   R(c,5,11,5,2,'#FBF7F1');R(c,3,20,2,2,'#2b2b2b');R(c,19,20,2,2,'#2b2b2b');},
+ // The Marriage Trap — a balance scale (right pan dipped)
+ scale(c){R(c,11,4,2,17,'#7a5e16');R(c,4,7,16,2,'#caa12a');
+   R(c,5,9,1,3,'#7a5e16');R(c,9,9,1,3,'#7a5e16');OB(c,3,12,8,2,'#F2CE4A');
+   R(c,15,9,1,5,'#7a5e16');R(c,19,9,1,5,'#7a5e16');OB(c,13,14,8,2,'#F2CE4A');
+   R(c,7,21,10,2,'#2b2b2b');},
+ // Unfolding London — an electricity meter (LCD + dial)
+ bolt(c){OB(c,3,3,18,18,'#e9e5db');OB(c,5,5,14,6,'#26323d');R(c,6,7,12,2,'#79d4bf');
+   R(c,7,7,1,2,'#16222b');R(c,9,7,1,2,'#16222b');R(c,11,7,1,2,'#16222b');R(c,13,7,1,2,'#16222b');R(c,15,7,1,2,'#16222b');
+   c.fillStyle='#2b2b2b';c.beginPath();c.arc(12,16,4,0,7);c.fill();c.fillStyle='#cfd6dc';c.beginPath();c.arc(12,16,3,0,7);c.fill();R(c,12,14,1,2,'#E8654A');},
+ // The Unasked — a clipboard / screening form
+ heart(c){OB(c,4,4,16,18,'#c98a4a');R(c,6,6,12,14,'#fdf8ee');OB(c,9,3,6,3,'#9a9a9a');
+   OB(c,7,9,3,3,'#fff');R(c,8,10,1,1,'#3F9E6B');R(c,11,10,6,1,'#bdb6aa');R(c,7,14,9,1,'#bdb6aa');R(c,7,17,6,1,'#bdb6aa');},
+ // Rush Hour — a car
+ car(c){OB(c,5,7,10,5,'#E0A05A');R(c,7,9,3,2,'#BFE3F2');R(c,11,9,2,2,'#BFE3F2');
+   OB(c,2,11,20,6,'#C97B3A');R(c,20,13,2,2,'#F2D80C');
+   R(c,5,16,4,4,'#2b2b2b');R(c,15,16,4,4,'#2b2b2b');R(c,6,17,2,2,'#999');R(c,16,17,2,2,'#999');},
+ // Fluctuating Zone — shoreline with a dashed high-water mark
+ map(c){R(c,0,0,24,24,'#ECE4CC');R(c,0,13,24,11,'#4A90B8');R(c,0,12,24,1,'#2b2b2b');
+   R(c,3,15,4,1,'#7FB6D6');R(c,11,17,4,1,'#7FB6D6');R(c,16,15,4,1,'#7FB6D6');
+   for(let x=2;x<22;x+=4)R(c,x,8,2,1,'#E8654A');},
+ // Residential Study — a house
+ grid(c){c.fillStyle='#2b2b2b';c.beginPath();c.moveTo(12,2);c.lineTo(22,11);c.lineTo(2,11);c.closePath();c.fill();
+   c.fillStyle='#C0392B';c.beginPath();c.moveTo(12,4);c.lineTo(20,10);c.lineTo(4,10);c.closePath();c.fill();
+   OB(c,5,11,14,10,'#E8D8B8');OB(c,10,15,5,6,'#7a5230');R(c,13,18,1,1,'#F2D80C');OB(c,7,13,3,3,'#9ec9e0');},
+ // Xianlin School — a building with a flag
+ bldg(c){OB(c,3,6,18,15,'#B7A999');R(c,4,7,16,1,'#857A6A');
+   for(let y=10;y<19;y+=3)for(let x=6;x<19;x+=3)R(c,x,y,2,2,'#FAF6F0');
+   OB(c,10,16,4,5,'#6E6456');R(c,11,3,1,3,'#888');R(c,12,3,4,2,'#E8654A');},
+ // Ski Tower — a tower with a snow cap, slope & flag
+ peak(c){OB(c,8,5,8,16,'#8A98A8');R(c,9,6,6,2,'#fff');
+   R(c,10,9,1,1,'#cdd6df');R(c,13,9,1,1,'#cdd6df');R(c,10,12,1,1,'#cdd6df');R(c,13,12,1,1,'#cdd6df');R(c,10,15,1,1,'#cdd6df');R(c,13,15,1,1,'#cdd6df');
+   c.fillStyle='#fff';c.beginPath();c.moveTo(16,15);c.lineTo(22,21);c.lineTo(16,21);c.closePath();c.fill();
+   R(c,16,3,1,2,'#888');R(c,17,3,3,2,'#E8654A');},
+};
+function mkLogo(ic,size){const cv=document.createElement('canvas');cv.width=24;cv.height=24;(LOGO[ic]||ICON[ic])(cv.getContext('2d'));cv.style.width=size+'px';cv.style.height=size+'px';cv.style.imageRendering='pixelated';return cv;}
+const CAT={AI:{c:'#2D7FF9',label:'AI / ML'},'Data & Space':{c:'#10B981',label:'Data & Space'},Built:{c:'#F5A623',label:'Built'}};
+const STICK={AI:'#FCEFA1','Data & Space':'#CFE9D7',Built:'#F8DCB2'};   // soft sticky-note tones per category
+const ROLES={'01':'agentic workflow &amp; data-structure design, frontend &amp; interaction, responsible AI · team of 4','02':'MDP formulation, UI &amp; game-mechanics design, reward shaping · team of 2','03':'EDA, cleaning &amp; feature engineering, experiment design, viz &amp; bias diagnosis · team of 4','04':'narrative framing, visualization &amp; algorithm design · team of 4','05':'pipeline, distillation, eval · individual','06':'full pipeline & write-up · individual','07':'research & visualization','08':'research & visualization','09':'project architect · SD→CD, on-site','10':'concept & form-finding'};
+// one-line functional subtitle under the (evocative) title, so the codename is instantly legible
+const SUBS={'01':'Sentence-grounded paper Q&A agents','02':'RL furniture layout, from a reward alone','03':'Data governance — profiling, cleaning & mining a census dataset','04':'Clustering London households by energy use','05':'Depression screening via knowledge distillation','06':'Next-hour highway traffic forecasting','07':'Mapping a reservoir’s water-level zone — GIS + image mining','08':'Hundreds of residential floor plans, superimposed','09':'A built 62,000 m² school','10':'Stacking winter sport into a vertical complex'};
+const EMO={'01':'🌈','02':'🛏️','03':'⚖️','04':'⚡','05':'🙍','06':'🚗','07':'🌊','08':'🏠','09':'🏫','10':'🎿'};
+// fuller narrative shown in the gallery header (so a viewer actually understands the project)
+const DESC={
+ '01':'LLM answers about papers are easy to doubt and hard to verify. PRISM runs a five-agent pipeline that writes an answer and then pins every claim to the exact source sentence, behind five layers of guardrails — so each claim links back to where it came from, and all 13 safety probes pass.',
+ '02':'A furnished room has no single “correct” layout to imitate, so there is nothing to supervise on. Instead a MaskablePPO agent learns from a reward encoding architectural common sense — accessibility, privacy, circulation — with zero demonstrations, reaching 2.4× a random policy and growing its own spatial grammar that carries over to unseen rooms.',
+ '03':'A data-governance study of the 1994 UCI Adult Census: profile, clean, explore and mine the data, treating ML models as evidence of data quality rather than the goal. Probing subgroups surfaced the “Marriage Trap” — single minority women are wrongly rejected 9.74× more often, with marriage standing in as a proxy for merit, and every fairness fix trades recall against equity.',
+ '04':'“Average” energy profiles hide how differently households actually live. Engineering five features from London smart-meter data and comparing two preprocessing pathways before K-Means resolves 5,556 households into four energy archetypes — and a simple log transform beat Yeo-Johnson on every metric.',
+ '05':'Depression screening usually leans on long, intrusive questionnaires. Distilling a 46-feature teacher into a student that reads only 10 non-intrusive behavioral markers lifts held-out recall from 55% to 88% — the distillation transfers the teacher’s decision geometry and quietly acts as a regularizer.',
+ '06':'Forecasting next-hour highway traffic means wrestling with noisy, gap-ridden sensor data. A data-centric pipeline — gap-aware windows and cyclical time encoding feeding a SimpleRNN — cuts RMSE 35.6% below linear regression with fewer parameters, and clean data beats dropout.',
+ '07':'A reservoir town’s waterline shifts with the seasons — so where does riverside life actually happen on that moving edge? Mining GIS terrain alongside thousands of sampled social-media images maps the water-level fluctuating zone into a data-driven atlas of riverside activity — spatial research done as an architect, before the AI degree.',
+ '08':'How do people really live inside East-China high-rises, beyond the show flat? Superimposing and quantifying hundreds of residential floor plans collapses them into a single “ghost” — a density map of doors and stairs that reveals the shared patterns of everyday space.',
+ '09':'A 62,000 m² school designed under dense regulatory code and a tight brief, resolved through multi-objective spatial optimization. As project architect I led it from SD through CD and on-site supervision; it was built, awarded First Prize, and published on ArchDaily.',
+ '10':'How do you fit winter sport onto a constrained urban site? Stacking ski-jump, rink and training into a vertical “boarding complex” through iterative form-finding turns a small footprint into a section — a schematic tower.'};
+// hosted PDFs in docs/ (coursework only; n06 traffic is a written report, rest are decks)
+const DOC={'01':'docs/CA6123_Assignment_Prism.pdf','02':'docs/CA6126_RL_assignment_myLittleBedroom.pdf','03':'docs/CA6003_Grp24_Presentation.pdf','04':'docs/CA6002_Assignment_Group32.pdf','05':'docs/CA6001_Student_Depression_H.Wang.pdf','06':'docs/CA6000_Traffic_Forecasting_H.Wang.pdf'};
+const DOCPAGES={'01':10,'02':19,'03':12,'04':19,'05':12,'06':11};   // page-image counts in docs/pages/<n>/
+function projLinks(p){const a=p.links.slice(); if(DOC[p.n])a.push([(p.n==='06'?'Report':'Slides'),DOC[p.n]]); return a;}
+
+const P=[
+ {n:'01',cat:'AI',ic:'prism',t:'PRISM',intro:'Sentence-level citations for arXiv papers — a generate-then-locate agent pins every claim to its source. <b>13/13</b> guardrail probes pass.',
+  stack:['Agentic AI','Multi-Agent','Gemini','Guardrails'],links:[['Demo','https://huch64-prism.hf.space/'],['Code','https://github.com/Huch64/CA6123_PRISM']],imgs:[
+   {i:'assets/prism/interpretability-ui.webp',w:3,cap:'The interpretability UI — every claim links to its source sentence'},
+   {v:'assets/prism/topic-focus.mp4',w:2,cap:'Focus lens: the current sentence lights up as you read'},
+   {v:'assets/prism/topic-ask-reflector.mp4',w:2,cap:'Ask → answer; thumbs-down → the reflector revises'},
+   {i:'assets/prism/sys-tree.webp',g:1,cap:'Under the hood: two agent trees, one shared state — /analyze builds the context once, /ask dispatches tools per question'}]},
+ {n:'02',cat:'AI',ic:'bed',t:'My Little Bedroom',intro:'An RL agent furnishes rooms from a reward alone — no demonstrations. Reaches <b>2.4× a random policy</b> and grows its own spatial grammar.',
+  stack:['RL','MaskablePPO','Gymnasium'],links:[['Demo','https://huch64-mylittlebedroom.hf.space'],['Code','https://github.com/Huch64/CA6126_myLittleBedroom']],imgs:[
+   {v:'assets/bedroom/demo.mp4',w:2,cap:'The trained agent furnishing a room, live'},
+   {v:'assets/bedroom/interface.mp4',w:2,cap:'The reward, decomposed live — privacy · light · efficiency · diversity · compactness'},
+   {i:'assets/bedroom/spatial-grammar.webp',w:3,cap:'Emergent placement rules per furniture type'},
+   {i:'assets/bedroom/training-curve.webp',w:3,cap:'Learning curve — 2.4× a random policy'},
+   {i:'assets/bedroom/training-heatmaps.webp',g:1,cap:'Spatial behaviour matures over training — bed & wardrobe heatmaps, 0.05M→2M steps'}]},
+ {n:'03',cat:'AI',ic:'scale',t:'The Marriage Trap',intro:'A data-governance dig into the 1994 UCI Adult Census — profiling, cleaning, mining. It surfaced a “Marriage Trap”: single minority women are wrongly rejected <b>9.74×</b> more, marriage standing in as a proxy for merit.',
+  stack:['Bias Audit','Data Governance','scikit-learn'],links:[],imgs:[
+   {i:'assets/fairness/pca-boundary.webp',w:3,cap:'PCA: a biased linear boundary slices the overlap'},
+   {i:'assets/fairness/success-leaderboard.webp',w:2,cap:'Success-probability leaderboard by subgroup'},
+   {i:'assets/fairness/linear-vs-rf.webp',w:3,cap:'Engineered linear model vs Random-Forest ceiling'},
+   {i:'assets/fairness/identity-heatmap.webp',g:1,cap:'Conditional-probability heatmap: how identity labels predict each other — the marriage proxy'},{i:'assets/fairness/fnr-intersectional.webp',g:1,cap:'Intersectional false-negative rates — minority women excluded most (FNR 38% vs white men 12%)'}]},
+ {n:'04',cat:'Data & Space',ic:'bolt',t:'Unfolding London',intro:'Clustering <b>5,556</b> London households into <b>4 energy archetypes</b> from smart-meter data — a log transform beat Yeo-Johnson before K-Means.',
+  stack:['Unsupervised','K-Means','t-SNE','Data Viz'],links:[],imgs:[
+   {i:'assets/energy/fingerprint.webp',w:2,cap:'A circadian “fingerprint” — one London household’s three years of electricity, coiled into one form'},
+   {i:'assets/energy/households.webp',w:3,cap:'5,556 households — colour maps wealth, opacity maps confidence'},
+   {i:'assets/energy/energy-dna.webp',w:3,cap:'London Energy DNA: the 4 archetypes across behavioural axes'},
+   {i:'assets/energy/tsne.webp',w:2,cap:'t-SNE: the log-transform reveals discrete micro-communities'},
+   {i:'assets/energy/transform-audit.webp',g:1,cap:'Pairwise correlation audit — Yeo-Johnson vs log transform'},
+   {i:'assets/energy/proxy-history.webp',g:1,cap:'From the window tax to the smart meter — a long history of reading the home by proxy'}]},
+ {n:'05',cat:'AI',ic:'heart',t:'The Unasked',intro:'Ten behavioral markers, distilled from a 46-feature teacher — held-out recall jumps <b>55% → 88%</b>; distillation acts as a regularizer.',
+  stack:['Knowledge Distillation','Deep Learning'],links:[['Code','https://github.com/Huch64/CA6001_theUnasked']],imgs:[
+   {i:'assets/depression/latent-space.webp',w:3,cap:'Latent space: how KD bridges 46→10 features'},
+   {i:'assets/depression/feature-matrix.webp',w:2,cap:'Predictive impact vs data objectivity'},
+   {i:'assets/depression/correlation-matrix.webp',w:2,cap:'Feature correlation matrix'},
+   {i:'assets/depression/performance.webp',w:1,cap:'Baseline vs distilled student — recall 55%→88%'},
+   {i:'assets/depression/feature-radar.webp',g:1,cap:'Behavioral feature profile'},
+   {i:'assets/depression/pipeline.webp',cap:'The 3-phase pipeline'}]},
+ {n:'06',cat:'AI',ic:'car',t:'Rush Hour',intro:'Next-hour I-94 traffic forecasting — a SimpleRNN cut RMSE <b>35.6%</b> with fewer parameters; clean data beat dropout.',
+  stack:['RNN','Time Series','TensorFlow'],links:[],imgs:[
+   {i:'assets/traffic/rnn-forecast.webp',w:3,cap:'SimpleRNN tracks the 7-day rhythm — RMSE −35.6%'},
+   {i:'assets/traffic/pipeline.webp',w:3,cap:'The data-centric forecasting pipeline'},
+   {i:'assets/traffic/weather-vs-sensors.webp',w:1,cap:'Weather labels vs objective sensors'},
+   {i:'assets/traffic/extra-03.webp',g:1,cap:''}]},
+ {n:'07',cat:'Data & Space',ic:'map',t:'Fluctuating Zone',intro:'GIS + social-media image mining of a river’s water-level fluctuating zone — data-driven spatial research, before the AI degree.',
+  stack:['GIS','Data Mining','Urban'],links:[],imgs:[
+   {i:'assets/riverbank/gis-map.webp',w:3,cap:'Water-level fluctuating zone, mapped from terrain + data'},
+   {i:'assets/riverbank/activity-collage.webp',w:2,cap:'Thousands of riverside activity images, sampled to a map'},
+   {i:'assets/riverbank/historic-river.webp',w:1,cap:'Chongqing City at Dusk, 1909 · Chamberlin'}]},
+ {n:'08',cat:'Data & Space',ic:'grid',t:'Residential Study',intro:'Hundreds of floor plans superimposed into one quantitative “ghost” of how we live — door vs stair density.',
+  stack:['Quantitative','Data Viz'],links:[],imgs:[
+   {i:'assets/residential/ghost-overlay-redgreen.webp',w:3,cap:'Hundreds of plans overlaid — doors (red) vs stairs (green)'},
+   {i:'assets/residential/typology-grid.webp',w:2,cap:'The plan dataset'},
+   {i:'assets/residential/unit-plans-grid.webp',w:2,cap:'Unit-level typologies'},
+   {i:'assets/residential/selling-vs-usable.webp',w:1,cap:'Sellable vs usable area'},
+   {i:'assets/residential/ghost-overlay-bw.webp',g:1,cap:'The same collapse, in monochrome'}]},
+ {n:'09',cat:'Built',ic:'bldg',t:'Xianlin School',intro:'A built <b>62,000 m²</b> school (First Prize) — solving form under dense regulatory code. Project lead through SD→CD and on-site.',
+  stack:['Architecture','Built','First Prize'],links:[['ArchDaily','https://www.archdaily.com/1018999/xianlin-school-yanfei-architects']],imgs:[
+   {i:'assets/xianlin/mep-integration.webp',w:3,cap:'MEP integration — services routed tight, so the public corridors stay almost clear'},
+   {i:'assets/xianlin/aerial.webp',w:2,cap:'62,000 m² in context'},
+   {i:'assets/xianlin/code-diagram.webp',w:2,cap:'Solving form under regulatory code'},
+   {i:'assets/xianlin/stair-iterations.webp',w:3,cap:'A wall of staircase iterations — a constrained, rule-driven design search'},
+   {v:'assets/xianlin/flyover.mp4',cap:'Aerial flyover of the school under construction'},
+   {i:'assets/xianlin/structure-model.webp',cap:'Structure model'},
+   {i:'assets/xianlin/color-system.webp',cap:'Façade colour system'},
+   {i:'assets/xianlin/grandstand.webp',cap:'The grandstand and facade facing the sports field'},
+   {i:'assets/xianlin/education-axon.webp',cap:'Education complex — exploded over its underground drop-off & car park'},
+   {i:'assets/xianlin/street-view.webp',cap:'Street view, looking toward the school'}]},
+ {n:'10',cat:'Built',ic:'peak',t:'Ski Tower',intro:'Stacking winter sport into a vertical “boarding complex” — an iterative form-finding study.',
+  stack:['Architecture','Form-finding'],links:[],imgs:[
+   {i:'assets/skitower/dusk-exterior.webp',w:3,cap:'The boarding complex at dusk'},
+   {i:'assets/skitower/form-study-technical.webp',w:2,cap:'Form-finding study — technical sequence'},
+   {i:'assets/skitower/massing-model.webp',g:1,cap:'White massing model'}]},
+];
+
+const WSIZE={1:166,2:222,3:288};   // initial width before media loads (refined by AREA in pack)
+const VID=300;
+// balance by AREA, not width: a 3-tier info weight sets a target footprint, then pack() derives each
+// tile's width from its REAL aspect — so wide panoramas don't dominate & tall figures aren't oversized
+const AREA={1:21000,2:30000,3:39000,h:62000,v:33000,vh:56000}, MINW=124, MAXW=330;  // hero(h/vh)=big, board sized by info-weight (stable pre-enlarge version)
+// size by information content: dense diagrams/text big · photos/renders small
+function infoWeight(m){
+  if(m.v) return 2;
+  const s=m.i.toLowerCase();
+  if(/matrix|grid|pipeline|audit|framework|correlation|leaderboard|orthogon|distribution|evolution|typology|plan|system|code|axon|692|694|695|696|698|nb-01|nb-07|nb-03|nb-09|slide-08|slide-11|slide-12|fig-6|06_feature|05_pipeline/.test(s)) return 3;
+  if(/render|dusk|facade|aerial|model|hist|extract-i|691|occupancy|section|slide-02|slide-03|fig-1|fig-3|fig-5|fig-7|pdf-/.test(s)) return 1;
+  return 2;
+}
+const stage=document.getElementById('stage');
+const tiles=[]; // flat, EQUAL-RANK list of every card & image
+
+/* build profile card */
+(function(){
+  const card=document.createElement('div');card.className='card tcard profile';card.style.setProperty('--stick','#ECE8DB');
+  card.innerHTML=`<div class="name">Haocheng Wang</div>
+    <div class="role0">An explorer drawn to structured, constraint-guided learning.</div>
+    <div class="meta"><b>Now</b> · M.Computing in Applied AI, NTU Singapore · GPA 4.63/5.0<br><b>Before</b> · Project Architect, Yanfei Architects (2018–24)</div>
+    <div class="links" id="plinks"></div>`;
+  stage.appendChild(card);
+  const pl=card.querySelector('#plinks');
+  [['gh','GitHub','https://github.com/Huch64'],['mail','Email','mailto:hwang051@e.ntu.edu.sg'],['doc','CV','docs/Wang_Haocheng_CV.pdf']].forEach(l=>{
+    const a=document.createElement('a');a.className='icn';
+    if(l[0]==='doc'){a.href='#';a.addEventListener('click',e=>{e.preventDefault();openCV();});}
+    else{a.href=l[2];a.target='_blank';}
+    a.appendChild(mkIcon(l[0],13));a.insertAdjacentHTML('beforeend',`<span>${l[1]}${l[0]==='doc'?'':' ↗'}</span>`);pl.appendChild(a);});
+  tiles.push({el:card,cat:'_'});
+})();
+
+/* hover a project card → its whole project's cards glow lemon */
+function hl(pi,on){document.querySelectorAll('[data-pi="'+pi+'"]').forEach(e=>e.classList.toggle('hl',!!on));}
+function iconFor(s){s=s.toLowerCase();if(/demo|live/.test(s))return 'play';if(/code|github/.test(s))return 'gh';if(/pdf|report|slides/.test(s))return 'doc';return 'ext';}
+
+/* fold the folder-driven manifest into each project's imgs: the _assets_src folders are the source of
+   truth for WHICH files exist & their role (hero/board/gallery); captions stay authored here and are
+   matched by filename — a file with no caption simply shows blank. Drop a file in a folder → it appears. */
+(function(){if(!window.GALLERY)return;
+  P.forEach(p=>{const key=(p.imgs[0]&&(p.imgs[0].i||p.imgs[0].v)||'/x/').split('/')[1];p.key=key;
+    const caps={};p.imgs.forEach(m=>{const b=(m.i||m.v).split('/').pop().replace(/\.[^.]+$/,'');caps[b]={cap:m.cap,w:m.w};});
+    const list=window.GALLERY[key]||[];
+    if(list.length)p.imgs=list.map(e=>{const isV=e.k==='v',path='assets/'+key+'/'+e.f+(isV?'.mp4':'.webp'),meta=caps[e.f]||{};
+      const o=isV?{v:path}:{i:path};o.cap=meta.cap||'';if(meta.w)o.w=meta.w;o.r=e.r;return o;});});
+})();
+
+/* build project cards + shots */
+P.forEach((p,pi)=>{
+  const card=document.createElement('div');card.className='card tcard proj';
+  card.innerHTML=`<div class="hd"><span class="hemoji">${EMO[p.n]||''}</span><div><div class="tt">${p.t}</div>${SUBS[p.n]?`<div class="sub">${SUBS[p.n]}</div>`:''}</div></div>
+    <div class="stack">${p.stack.map(s=>`<span>${s}</span>`).join('')}</div>`;
+  card.style.cursor='pointer';card.onclick=()=>{(p.detail==='pdf'&&DOC[p.n])?window.open(DOC[p.n],'_blank'):openGallery(pi,0);};
+  card.dataset.pi=pi;card.style.setProperty('--cat',CAT[p.cat].c);card.style.setProperty('--stick',STICK[p.cat]);
+  card.addEventListener('mouseenter',()=>hl(pi,1));card.addEventListener('mouseleave',()=>hl(pi,0));
+  const defs=projLinks(p);
+  if(defs.length){const lk=document.createElement('div');lk.className='links';
+    defs.forEach(l=>{const a=document.createElement('a');a.className='icn';const isDoc=(l[1]===DOC[p.n]);
+      if(isDoc){a.href='#';a.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();openDoc(pi);});}
+      else{a.href=l[1];a.target='_blank';a.addEventListener('click',e=>e.stopPropagation());}
+      a.appendChild(mkIcon(iconFor(l[0]),13));a.insertAdjacentHTML('beforeend',`<span>${l[0]}${isDoc?'':' ↗'}</span>`);lk.appendChild(a);});
+    card.appendChild(lk);}
+  stage.appendChild(card);tiles.push({el:card,cat:p.cat,pi});
+  p.imgs.forEach((m,idx)=>{
+    if(m.r?m.r==='gallery':m.g)return;          // gallery-only: lives in the gallery, not on the board
+    const isHero=m.r==='hero';                  // hero/ folder → biggest
+    const el=document.createElement('div');el.className='shot'+(isHero?' hero':'');el.dataset.pi=pi;
+    el.dataset.wt=m.v?(isHero?'vh':'v'):(isHero?'h':(m.w||infoWeight(m)));el.style.width=(m.v?VID:WSIZE[el.dataset.wt]||WSIZE[3])+'px';
+    if(m.v){const v=document.createElement('video');v.src=encodeURI(m.v);v.muted=true;v.loop=true;v.playsInline=true;v.autoplay=true;v.preload='auto';v.setAttribute('muted','');el.appendChild(v);
+      el.dataset.isvid='1';}
+    else{const im=document.createElement('img');im.src=encodeURI(m.i);im.alt=m.cap||p.t;el.appendChild(im);}
+    if(m.cap){const cp=document.createElement('span');cp.className='shotcap';cp.textContent=m.cap;el.appendChild(cp);}
+    el.onclick=()=>openImg(pi,idx);
+    stage.appendChild(el);tiles.push({el,cat:p.cat,pi});
+  });
+});
+
+/* ===== layout — all tiles equal rank, shelf-packed (tight, controlled spacing) ===== */
+function rnd(a,b){return a+Math.random()*(b-a);}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const ALLOW=14;   // permitted overlap (px) — "一丢丢重叠"
+function pack(mode){
+  const W=Math.min(stage.clientWidth,1760), M=8;
+  const nodes=tiles.map(t=>{
+    let w=t.el.offsetWidth||262, h=t.el.offsetHeight||200;
+    const med=t.el.querySelector('video,img'), iw=med&&(med.videoWidth||med.naturalWidth), ih=med&&(med.videoHeight||med.naturalHeight);
+    const wt=t.el.dataset.wt;
+    // shot tile: width from a target AREA + the media's REAL aspect → comparable visual weight per tile
+    if(iw&&ih&&wt&&!t.el.dataset.usermoved){w=Math.round(Math.max(MINW,Math.min(MAXW,Math.sqrt(AREA[wt]*iw/ih))));t.el.style.width=w+'px';}
+    if(iw&&ih){const cw=w-12; h=Math.round(cw*ih/iw)+12;}                 // 12 = .shot padding(5·2)+border(1·2)
+    const isCard=t.el.classList.contains('tcard');
+    // ax/ay (the card's top-left anchor offset) is set per-cluster below, ∝ cluster size (no rotation)
+    return {el:t.el,w,h,vid:!!t.el.querySelector('video'),card:isCard,ax:0,ay:0,key:(t.pi==null?'_':t.pi),cat:t.cat,rot:0,x:0,y:0};
+  });
+  // one centre per project (+profile), on a loose jittered field
+  let keys=[...new Set(nodes.map(n=>n.key))];
+  if(mode==='category'){const rank={'_':-1,'AI':0,'Data & Space':1,'Built':2};const catOf={};nodes.forEach(n=>catOf[n.key]=n.cat);
+    keys.sort((a,b)=>(rank[catOf[a]]-rank[catOf[b]])||((a==='_'?-1:a)-(b==='_'?-1:b)));}
+  else keys.sort((a,b)=>(a==='_'?-1:a)-(b==='_'?-1:b));   // featured: profile · PRISM(0) · bedroom(1) · then by #
+  // each cluster gets ROOM ∝ ITS CONTENT (so PRISM/bedroom — wide videos + UI shots — aren't squeezed into
+  // a 3-tile cell). Estimate a box (w×h) from total tile area, then SKYLINE-pack the boxes: organic & compact,
+  // each box dropped into the lowest-fitting slot so clusters nest — NOT a rigid grid.
+  const area={};nodes.forEach(n=>{area[n.key]=(area[n.key]||0)+n.w*n.h;});
+  const dim={}, FILL=0.72, ASP=1.2;
+  keys.forEach(k=>{const A=area[k]||40000;dim[k]={w:Math.sqrt(A*ASP/FILL)+12,h:Math.sqrt(A/(ASP*FILL))+12,r:Math.sqrt(A/Math.PI/FILL)};});
+  // (no card anchor — with zero overlap the card can sit naturally in the cluster without covering anything)
+  const center={}, pad=10, binW=22, nb=Math.max(1,Math.ceil(W/binW)), sky=new Array(nb).fill(96);
+  keys.forEach(k=>{const w=dim[k].w,h=dim[k].h,cols=Math.min(nb,Math.max(1,Math.round((w+pad)/binW)));
+    let bx=0,bt=Infinity;
+    for(let i=0;i+cols<=nb;i++){let t=0;for(let j=i;j<i+cols;j++)if(sky[j]>t)t=sky[j];
+      if(t<bt){bt=t;bx=i;}}
+    center[k]={x:bx*binW+w/2+rnd(-6,6), y:bt+h/2+rnd(-6,6)};
+    for(let j=bx;j<bx+cols&&j<nb;j++)sky[j]=bt+h+pad;});
+  // seed each cluster's tiles in a small sunflower disk (INITIAL positions only — the attractor is the centre)
+  const byKey={};nodes.forEach(n=>{(byKey[n.key]=byKey[n.key]||[]).push(n);});
+  Object.values(byKey).forEach(g=>{shuffle(g);g.forEach((n,k)=>{const a=k*2.399+rnd(0,.6),r=64*Math.sqrt(k);n.x=center[n.key].x+Math.cos(a)*r-n.w/2;n.y=center[n.key].y+Math.sin(a)*r-n.h/2;});});
+  const ITERS=520;
+  for(let it=0;it<ITERS;it++){
+    // pull each tile toward its target (images → cluster centre; the card → top-left anchor) so the cluster
+    // self-packs into an organic blob with the card hung off one corner; the long tail (last 180 passes) drops
+    // the pull = collision-ONLY cleanup, which fully de-overlaps even the dense video-heavy clusters (PRISM/bedroom)
+    const pull=it<ITERS-180?0.05:0;
+    if(pull)nodes.forEach(n=>{n.x+=(center[n.key].x+n.ax-(n.x+n.w/2))*pull;n.y+=(center[n.key].y+n.ay-(n.y+n.h/2))*pull;});
+    for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
+      const a=nodes[i],b=nodes[j];
+      let dx=(b.x+b.w/2)-(a.x+a.w/2), dy=(b.y+b.h/2)-(a.y+a.h/2);
+      const ox=(a.w+b.w)/2-Math.abs(dx), oy=(a.h+b.h)/2-Math.abs(dy);
+      // NO overlap anywhere — every tile keeps a clear gap (same project 8px, across projects 18px).
+      const al = (a.key===b.key) ? -4 : -12;
+      if(ox>al&&oy>al){                                         // push apart RADIALLY (along centre-line) — organic, no axis-snapping
+        let len=Math.hypot(dx,dy); if(len<0.5){dx=rnd(-1,1);dy=rnd(-1,1);len=Math.hypot(dx,dy)||1;}
+        const pen=(Math.min(ox,oy)-al)*0.5, ux=dx/len, uy=dy/len;
+        a.x-=ux*pen;a.y-=uy*pen;b.x+=ux*pen;b.y+=uy*pen;
+      }
+    }
+  }
+  let maxY=0;
+  nodes.forEach(n=>{n.x=Math.max(M,Math.min(W-n.w-M,n.x));n.y=Math.max(72,n.y);
+    n.el.style.left=n.x+'px';n.el.style.top=n.y+'px';n.el.style.transform=`rotate(${n.rot}deg)`;
+    n.el.style.opacity='1';n.el.style.pointerEvents='';
+    n.el.style.zIndex=n.el.classList.contains('tcard')?80:20;maxY=Math.max(maxY,n.y+n.h);});
+  stage.style.height=(maxY+120)+'px';
+}
+/* tidy view — file every key-image into its project card (folder feel) */
+function tidy(){
+  const W=Math.min(stage.clientWidth,1760), cardW=230, gap=36;
+  const cols=Math.max(1,Math.floor((W+gap)/(cardW+gap))), gridW=cols*cardW+(cols-1)*gap, x0=(W-gridW)/2;
+  const cards=tiles.filter(t=>t.el.classList.contains('tcard')).sort((a,b)=>((a.pi==null?-1:a.pi)-(b.pi==null?-1:b.pi)));
+  const colH=new Array(cols).fill(92);
+  cards.forEach(t=>{
+    let c=0;for(let i=1;i<cols;i++)if(colH[i]<colH[c])c=i;
+    const cw=t.el.offsetWidth, x=x0+c*(cardW+gap)+(cardW-cw)/2, y=colH[c];   // centre each card in its column → even gaps
+    t.el.style.left=x+'px';t.el.style.top=y+'px';t.el.style.transform='rotate(0deg)';t.el.style.zIndex=80;t.el.style.opacity='1';
+    tiles.forEach(s=>{if(s.el.classList.contains('tcard'))return;if(s.el.dataset.pi!=t.pi)return;
+      s.el.style.left=(x+cw/2-26)+'px';s.el.style.top=(y+44)+'px';s.el.style.transform='scale(.05)';s.el.style.opacity='0';s.el.style.pointerEvents='none';});
+    colH[c]+=t.el.offsetHeight+gap;
+  });
+  stage.style.height=(Math.max(...colH)+120)+'px';
+}
+/* narrow / phone — a single vertical information flow: profile · about · then each project,
+   card followed by its full-width media, in reading order (the board melts into a column) */
+function flow(){
+  const W=stage.clientWidth, colW=Math.min(W-24,460), cx=W/2;
+  let y=84;
+  tiles.forEach(t=>{const el=t.el, isImg=el.classList.contains('shot');
+    if(isImg)el.style.width=colW+'px';
+    const w=el.offsetWidth;
+    el.style.left=(cx-w/2)+'px';el.style.top=y+'px';el.style.transform='rotate(0deg)';
+    el.style.opacity='1';el.style.pointerEvents='';el.style.zIndex=isImg?20:80;
+    y+=el.offsetHeight+16;
+  });
+  stage.style.height=(y+70)+'px';
+}
+function whenReady(cb){
+  const media=stage.querySelectorAll('img,video');let n=media.length;if(!n)return cb();
+  let done=false;const fin=()=>{if(--n<=0&&!done){done=true;cb();}};
+  media.forEach(m=>{if(m.tagName==='IMG'){m.complete?fin():(m.addEventListener('load',fin),m.addEventListener('error',fin));}
+    else{m.readyState>=1?fin():(m.addEventListener('loadedmetadata',fin),m.addEventListener('error',fin));}});
+  setTimeout(()=>{if(!done){done=true;cb();}},4500);
+}
+
+/* gallery */
+const gov=document.getElementById('gov'),gwrap=document.getElementById('gwrap');
+// shared header (title + P/A/R + role + stack + links; PDF link opens the in-page doc view)
+function headBody(p){const pi=+p.n-1;
+  const links=projLinks(p).map(l=> l[1]===DOC[p.n]
+    ? `<a href="#" onclick="openDoc(${pi});return false;">${l[0]}</a>`
+    : `<a href="${l[1]}" target="_blank">${l[0]} ↗</a>`).join('');
+  return `<div><h2>${p.t}</h2>${SUBS[p.n]?`<div class="gsub">${SUBS[p.n]}</div>`:''}<div class="gi">${DESC[p.n]||p.intro}</div><div class="grole">Role · ${ROLES[p.n]}</div>
+    <div class="gstack">${p.stack.map(s=>`<span>${s}</span>`).join('')}</div>
+    ${links?`<div class="glinks">${links}</div>`:''}</div>`;}
+function openGallery(pi,start){
+  curSingle=null;
+  const p=P[pi];
+  const figs=p.imgs.map((m,i)=>{const inner=m.v?`<video src="${encodeURI(m.v)}" muted loop autoplay playsinline></video>`:`<img src="${encodeURI(m.i)}" loading="lazy" alt="${(m.cap||p.t).replace(/"/g,'&quot;')}">`;
+    return `<figure class="gfig" id="gf${i}" onclick="openImg(${pi},${i})"><div class="gimg">${inner}</div>${m.cap?`<figcaption>${m.cap}</figcaption>`:''}</figure>`;}).join('');
+  // append the full slides / report inline, after the curated figures (lazy-loaded so it stays light)
+  let docsec='';
+  if(DOC[p.n]){const np=DOCPAGES[p.n]||0;let pages='';
+    for(let i=1;i<=np;i++)pages+=`<img class="docpg" src="docs/pages/${p.n}/${String(i).padStart(2,'0')}.webp" loading="lazy" alt="page ${i}">`;
+    docsec=`<div class="gdocsec" id="gdocsec"><div class="gdivider">Full ${p.n==='06'?'report':'slides'} · ${np} pages ↓</div><div class="gdoc">${pages}</div></div>`;}
+  gwrap.innerHTML=`<div class="ghead"></div><div class="gfigs">`+figs+`</div>`+docsec;
+  const gh=gwrap.querySelector('.ghead');gh.insertAdjacentHTML('beforeend','<span class="gemoji">'+(EMO[p.n]||'')+'</span>');gh.insertAdjacentHTML('beforeend',headBody(p));
+  // the header Slides/Report link now scrolls down to the inline pages (no separate view)
+  const dl=gh.querySelector('.glinks a[onclick*="openDoc"]');
+  if(dl)dl.onclick=e=>{e.preventDefault();const s=document.getElementById('gdocsec');if(s)s.scrollIntoView({behavior:'smooth'});};
+  gov.classList.add('open');document.body.style.overflow='hidden';gov.scrollTop=0;
+  setTimeout(()=>{const t=document.getElementById('gf'+start);if(t&&start)t.scrollIntoView({block:'center'});},60);
+}
+// in-page document view — gallery-like header on top, embedded PDF below (no navigation)
+function openDoc(pi){
+  curSingle=null;
+  const p=P[pi], np=DOCPAGES[p.n]||0; let pages='';
+  for(let i=1;i<=np;i++)pages+=`<img class="docpg" src="docs/pages/${p.n}/${String(i).padStart(2,'0')}.webp" loading="lazy" alt="page ${i}">`;
+  gwrap.innerHTML=`<div class="ghead"></div><div class="gdoc">${pages}</div>`;
+  const gh=gwrap.querySelector('.ghead');gh.insertAdjacentHTML('beforeend','<span class="gemoji">'+(EMO[p.n]||'')+'</span>');gh.insertAdjacentHTML('beforeend',headBody(p));
+  gov.classList.add('open');document.body.style.overflow='hidden';gov.scrollTop=0;
+}
+let curSingle=null;   // {pi,idx,n} when the single-image view is open (drives ←/→ keys)
+function openImg(pi,idx){
+  const p=P[pi], m=p.imgs[idx], n=p.imgs.length;curSingle={pi,idx,n};
+  const media=m.v?`<video src="${encodeURI(m.v)}" muted loop autoplay playsinline></video>`:`<img src="${encodeURI(m.i)}" alt="${(m.cap||p.t).replace(/"/g,'&quot;')}">`;
+  gwrap.innerHTML=`<div class="single"><div class="simg">${media}</div>
+    ${m.cap?`<div class="scap">${m.cap}</div>`:''}
+    <div class="sfoot"><span class="sp">${p.t}</span><span>${idx+1} / ${n}</span>
+      <span class="slinks"><a href="#" onclick="openGallery(${pi},${idx});return false;">view all ▦</a>${DOC[p.n]?` · <a href="#" onclick="openDoc(${pi});return false;">↳ Slides</a>`:''}</span></div></div>
+    ${n>1?`<button class="snav-side prev" aria-label="previous" onclick="openImg(${pi},${(idx-1+n)%n})">◂</button><button class="snav-side next" aria-label="next" onclick="openImg(${pi},${(idx+1)%n})">▸</button>`:''}`;
+  gov.classList.add('open');document.body.style.overflow='hidden';gov.scrollTop=0;
+}
+function openCV(){   // CV embedded in-page (no new tab); iframe always reflects the current PDF
+  curSingle=null;
+  gwrap.innerHTML=`<div class="cvwrap"><iframe class="cvframe" src="docs/Wang_Haocheng_CV.pdf#view=FitH" title="CV — Wang Haocheng"></iframe></div>`;
+  gov.classList.add('open');document.body.style.overflow='hidden';gov.scrollTop=0;
+}
+function closeG(){gov.classList.remove('open');document.body.style.overflow='';curSingle=null;}
+gov.addEventListener('click',e=>{if(e.target===gov)closeG();});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeG();return;}
+  if(curSingle&&gov.classList.contains('open')){const{pi,idx,n}=curSingle;
+    if(e.key==='ArrowLeft'){e.preventDefault();openImg(pi,(idx-1+n)%n);}
+    else if(e.key==='ArrowRight'){e.preventDefault();openImg(pi,(idx+1)%n);}}
+});
+
+/* controls */
+let mode='featured';
+const NARROW=700;                    // below this the board melts into a vertical flow
+function apply(m){mode=m;
+  document.getElementById('bTidy').classList.toggle('on',m==='tidy');
+  if(stage.clientWidth<NARROW&&m!=='tidy'){flow();return;}
+  if(m==='tidy')tidy();else pack(m);}
+document.getElementById('bTidy').onclick=()=>apply(mode==='tidy'?'featured':'tidy');
+
+/* autoplay videos/gifs, but only while on screen (battery / perf friendly, works on mobile) */
+const vio=new IntersectionObserver(es=>es.forEach(e=>{e.isIntersecting?e.target.play().catch(()=>{}):e.target.pause();}),{rootMargin:'150px'});
+stage.querySelectorAll('video').forEach(v=>vio.observe(v));
+/* re-pack once media reports its TRUE size — videos report dimensions late, so an early layout would
+   pack them with wrong heights and they'd overlap; this corrects the layout the moment sizes are known */
+let mt;const relayout=()=>{clearTimeout(mt);mt=setTimeout(()=>apply(mode),130);};
+stage.querySelectorAll('video').forEach(v=>v.addEventListener('loadeddata',relayout));
+stage.querySelectorAll('img').forEach(im=>{if(!im.complete)im.addEventListener('load',relayout);});
+/* opening animation — place instantly (no slide-from-corner), then a staggered top-down rise+fade */
+let entranced=false;
+function entrance(){
+  if(entranced)return;entranced=true;
+  stage.classList.add('booting');void stage.offsetWidth;   // snap to packed positions, kill the slide
+  const t=[...stage.querySelectorAll('.card,.shot')].sort((a,b)=>(a.offsetTop-b.offsetTop)||(a.offsetLeft-b.offsetLeft));
+  t.forEach((el,i)=>{el.style.animationDelay=(i*20)+'ms';el.classList.add('anim-in');
+    el.addEventListener('animationend',()=>{el.classList.remove('anim-in');el.style.animationDelay='';},{once:true});});
+  stage.classList.remove('booting');
+}
+whenReady(()=>{apply('featured');entrance();});    // default: featured order — PRISM + My Little Bedroom lead
+let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>apply(mode),200);});
+</script>
+</body>
+</html>
