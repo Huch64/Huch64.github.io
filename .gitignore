@@ -7,6 +7,9 @@ _proto/
 .claude/
 _*.html
 
+# internal planning notes (kept locally, not public)
+docs/README.md
+
 # abandoned prototype experiments (kept locally, not shipped)
 fairness-deck.html
 fairness-panel.html
