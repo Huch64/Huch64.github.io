@@ -439,7 +439,7 @@ P.forEach((p,pi)=>{
     defs.forEach(l=>{const a=document.createElement('a');a.className='icn';const isDoc=(l[1]===DOC[p.n]);
       if(isDoc){a.href='#';a.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();openDoc(pi);});}
       else{a.href=l[1];a.target='_blank';a.addEventListener('click',e=>e.stopPropagation());}
-      a.appendChild(mkIcon(iconFor(l[0]),13));a.insertAdjacentHTML('beforeend',`<span>${l[0]}${isDoc?'':' ↗'}</span>`);lk.appendChild(a);});
+      const ic=iconFor(l[0]);if(ic!=='ext')a.appendChild(mkIcon(ic,13));a.insertAdjacentHTML('beforeend',`<span>${l[0]}${isDoc?'':' ↗'}</span>`);lk.appendChild(a);});
     card.appendChild(lk);}
   stage.appendChild(card);tiles.push({el:card,cat:p.cat,pi});
   p.imgs.forEach((m,idx)=>{
