@@ -372,21 +372,16 @@ const tiles=[]; // flat, EQUAL-RANK list of every card & image
   const card=document.createElement('div');card.className='card tcard profile';card.style.setProperty('--stick','#ECE8DB');
   card.innerHTML=`<div class="name">Haocheng Wang</div>
     <div class="role0">An explorer drawn to structured, constraint-guided learning.</div>
+    <div class="meta"><b>Now</b> · M.Computing in Applied AI, NTU Singapore · GPA 4.63/5.0<br><b>Before</b> · Project Architect, Yanfei Architects (2018–24)</div>
     <div class="links" id="plinks"></div>`;
   stage.appendChild(card);
   const pl=card.querySelector('#plinks');
-  [['gh','GitHub','https://github.com/Huch64'],['mail','Email','mailto:hwang051@e.ntu.edu.sg']].forEach(l=>{
+  [['gh','GitHub','https://github.com/Huch64'],['mail','Email','mailto:hwang051@e.ntu.edu.sg'],['doc','CV','docs/Wang_Haocheng_CV.pdf']].forEach(l=>{
     const a=document.createElement('a');a.className='icn';
     if(l[0]==='doc'){a.href='#';a.addEventListener('click',e=>{e.preventDefault();openCV();});}
     else{a.href=l[2];a.target='_blank';}
     a.appendChild(mkIcon(l[0],13));a.insertAdjacentHTML('beforeend',`<span>${l[1]}${l[0]==='doc'?'':' ↗'}</span>`);pl.appendChild(a);});
   tiles.push({el:card,cat:'_'});
-  // dedicated CV card — sits beside the profile, opens the résumé inline
-  const cv=document.createElement('div');cv.className='card tcard cvcard';cv.style.cursor='pointer';
-  cv.innerHTML=`<div class="hd"><span class="hemoji">📄</span><div><div class="tt">Résumé / CV</div><div class="sub">PDF — opens inline</div></div></div>
-    <div class="meta"><b>Now</b> · M.Computing in Applied AI, NTU Singapore · GPA 4.63/5.0<br><b>Before</b> · Project Architect, Yanfei Architects (2018–24)</div>`;
-  cv.addEventListener('click',()=>openCV());
-  stage.appendChild(cv);tiles.push({el:cv,cat:'_'});
 })();
 
 /* hover a project card → its whole project's cards glow lemon */
