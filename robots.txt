@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://huch64.github.io/sitemap.xml
