@@ -10,6 +10,10 @@ _*.html
 # internal planning notes (kept locally, not public)
 docs/README.md
 
+# personal photo — not published (avatar is an emoji)
+me.webp
+me-px.webp
+
 # abandoned prototype experiments (kept locally, not shipped)
 fairness-deck.html
 fairness-panel.html

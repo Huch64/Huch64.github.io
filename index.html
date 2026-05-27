@@ -51,6 +51,8 @@ body{font-family:var(--sans);background:#fff;color:var(--ink);-webkit-font-smoot
 .tcard.profile{width:230px;}
 .tcard.proj{width:182px;}
 .tcard .name{font-family:var(--serif);font-size:24px;font-weight:600;line-height:1.04;}
+.phead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:2px;}
+.avatar-emo{font-size:40px;line-height:1;flex:0 0 auto;}
 .tcard .role0{font-size:12.5px;color:var(--mid);margin-top:6px;line-height:1.45;}
 .tcard .meta{margin-top:11px;font-size:11px;color:#444;line-height:1.55;border-top:1px solid var(--line);padding-top:10px;}
 .tcard .meta b{font-weight:600;}
@@ -99,10 +101,10 @@ body{font-family:var(--sans);background:#fff;color:var(--ink);-webkit-font-smoot
 .tcard .links a canvas{image-rendering:pixelated;width:13px;height:13px;}
 /* solid black cards — the one structural colour; colour else only from logos / images / dot */
 .tcard{color:#fff;border:none;border-radius:3px;
-  background-color:#161616;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
-  background-size:140px 140px;background-blend-mode:soft-light;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 50px rgba(0,0,0,.45), 0 12px 28px rgba(0,0,0,.24);}
+  background-color:#211e1b;
+  background-image:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0) 46%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.014' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23b)' opacity='0.45'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size:100% 100%,180px 180px,110px 110px;background-blend-mode:soft-light,soft-light,overlay;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10), inset 0 0 48px rgba(0,0,0,.55), 0 12px 28px rgba(0,0,0,.26);}
 .tcard .name,.tcard .hd .tt,.tcard .meta b,.tcard .intro b{color:#fff;}
 .tcard .role0{color:#bdbdbd;}
 .tcard .meta{color:#d2d2d2;border-top-color:rgba(255,255,255,.15);}
@@ -255,7 +257,7 @@ const STICK={AI:'#FCEFA1','Data & Space':'#CFE9D7',Built:'#F8DCB2'};   // soft s
 const ROLES={'01':'agentic workflow &amp; data-structure design, frontend &amp; interaction, responsible AI · team of 4','02':'MDP formulation, UI &amp; game-mechanics design, reward shaping · team of 2','03':'EDA, cleaning &amp; feature engineering, experiment design, viz &amp; bias diagnosis · team of 4','04':'narrative framing, visualization &amp; algorithm design · team of 4','05':'pipeline, distillation, eval · individual','06':'full pipeline & write-up · individual','07':'research & visualization','08':'research & visualization','09':'project architect · SD→CD, on-site','10':'concept & form-finding'};
 // one-line functional subtitle under the (evocative) title, so the codename is instantly legible
 const SUBS={'01':'Sentence-grounded paper Q&A agents','02':'RL furniture layout, from a reward alone','03':'Data governance — profiling, cleaning & mining a census dataset','04':'Clustering London households by energy use','05':'Depression screening via knowledge distillation','06':'Next-hour highway traffic forecasting','07':'Mapping a reservoir’s water-level zone — GIS + image mining','08':'Hundreds of residential floor plans, superimposed','09':'A built 62,000 m² school','10':'Stacking winter sport into a vertical complex'};
-const EMO={'01':'🌈','02':'🛏️','03':'⚖️','04':'⚡','05':'🙍','06':'🚗','07':'🌊','08':'🏠','09':'🏫','10':'🎿'};
+const EMO={'01':'🌈','02':'🛏️','03':'⚖️','04':'⚡','05':'🙍🏻‍♂️','06':'🚗','07':'🌊','08':'🏠','09':'🏫','10':'🎿'};
 // fuller narrative shown in the gallery header (so a viewer actually understands the project)
 const DESC={
  '01':'LLM answers about papers are easy to doubt and hard to verify. PRISM runs a five-agent pipeline that writes an answer and then pins every claim to the exact source sentence, behind five layers of guardrails — so each claim links back to where it came from, and all 13 safety probes pass.',
@@ -277,6 +279,7 @@ const P=[
  {n:'01',cat:'AI',ic:'prism',t:'PRISM',intro:'Sentence-level citations for arXiv papers — a generate-then-locate agent pins every claim to its source. <b>13/13</b> guardrail probes pass.',
   stack:['Agentic AI','Multi-Agent','Gemini','Guardrails'],links:[['Demo','https://huch64-prism.hf.space/'],['Code','https://github.com/Huch64/CA6123_PRISM']],imgs:[
    {i:'assets/prism/interpretability-ui.webp',w:3,cap:'The interpretability UI — every claim links to its source sentence'},
+   {i:'assets/prism/agentic-loop.webp',w:2,cap:'The agents mapped onto a perceive–reason–act–learn loop'},
    {v:'assets/prism/topic-focus.mp4',w:2,cap:'Focus lens: the current sentence lights up as you read'},
    {v:'assets/prism/topic-ask-reflector.mp4',w:2,cap:'Ask → answer; thumbs-down → the reflector revises'},
    {i:'assets/prism/sys-tree.webp',g:1,cap:'Under the hood: two agent trees, one shared state — /analyze builds the context once, /ask dispatches tools per question'}]},
@@ -286,6 +289,7 @@ const P=[
    {v:'assets/bedroom/interface.mp4',w:2,cap:'The reward, decomposed live — privacy · light · efficiency · diversity · compactness'},
    {i:'assets/bedroom/spatial-grammar.webp',w:3,cap:'Emergent placement rules per furniture type'},
    {i:'assets/bedroom/training-curve.webp',w:3,cap:'Learning curve — 2.4× a random policy'},
+   {i:'assets/bedroom/usage-difference.webp',cap:'Normalized occupancy &amp; category-usage differences'},
    {i:'assets/bedroom/training-heatmaps.webp',g:1,cap:'Spatial behaviour matures over training — bed & wardrobe heatmaps, 0.05M→2M steps'}]},
  {n:'03',cat:'AI',ic:'scale',t:'The Marriage Trap',intro:'A data-governance dig into the 1994 UCI Adult Census — profiling, cleaning, mining. It surfaced a “Marriage Trap”: single minority women are wrongly rejected <b>9.74×</b> more, marriage standing in as a proxy for merit.',
   stack:['Bias Audit','Data Governance','scikit-learn'],links:[],imgs:[
@@ -342,6 +346,7 @@ const P=[
  {n:'10',cat:'Built',ic:'peak',t:'Ski Tower',intro:'Stacking winter sport into a vertical “boarding complex” — an iterative form-finding study.',
   stack:['Architecture','Form-finding'],links:[],imgs:[
    {i:'assets/skitower/dusk-exterior.webp',w:3,cap:'The boarding complex at dusk'},
+   {i:'assets/skitower/dusk-render.webp',w:2,cap:'The tower seen from the Yan’an elevated road'},
    {i:'assets/skitower/form-study-technical.webp',w:2,cap:'Form-finding study — technical sequence'},
    {i:'assets/skitower/massing-model.webp',g:1,cap:'White massing model'}]},
 ];
@@ -365,18 +370,23 @@ const tiles=[]; // flat, EQUAL-RANK list of every card & image
 /* build profile card */
 (function(){
   const card=document.createElement('div');card.className='card tcard profile';card.style.setProperty('--stick','#ECE8DB');
-  card.innerHTML=`<div class="name">Haocheng Wang</div>
+  card.innerHTML=`<div class="phead"><div class="name">Haocheng Wang</div><span class="avatar-emo">👨🏻</span></div>
     <div class="role0">An explorer drawn to structured, constraint-guided learning.</div>
-    <div class="meta"><b>Now</b> · M.Computing in Applied AI, NTU Singapore · GPA 4.63/5.0<br><b>Before</b> · Project Architect, Yanfei Architects (2018–24)</div>
     <div class="links" id="plinks"></div>`;
   stage.appendChild(card);
   const pl=card.querySelector('#plinks');
-  [['gh','GitHub','https://github.com/Huch64'],['mail','Email','mailto:hwang051@e.ntu.edu.sg'],['doc','CV','docs/Wang_Haocheng_CV.pdf']].forEach(l=>{
+  [['gh','GitHub','https://github.com/Huch64'],['mail','Email','mailto:hwang051@e.ntu.edu.sg']].forEach(l=>{
     const a=document.createElement('a');a.className='icn';
     if(l[0]==='doc'){a.href='#';a.addEventListener('click',e=>{e.preventDefault();openCV();});}
     else{a.href=l[2];a.target='_blank';}
     a.appendChild(mkIcon(l[0],13));a.insertAdjacentHTML('beforeend',`<span>${l[1]}${l[0]==='doc'?'':' ↗'}</span>`);pl.appendChild(a);});
   tiles.push({el:card,cat:'_'});
+  // dedicated CV card — sits beside the profile, opens the résumé inline
+  const cv=document.createElement('div');cv.className='card tcard cvcard';cv.style.cursor='pointer';
+  cv.innerHTML=`<div class="hd"><span class="hemoji">📄</span><div><div class="tt">Résumé / CV</div><div class="sub">PDF — opens inline</div></div></div>
+    <div class="meta"><b>Now</b> · M.Computing in Applied AI, NTU Singapore · GPA 4.63/5.0<br><b>Before</b> · Project Architect, Yanfei Architects (2018–24)</div>`;
+  cv.addEventListener('click',()=>openCV());
+  stage.appendChild(cv);tiles.push({el:cv,cat:'_'});
 })();
 
 /* hover a project card → its whole project's cards glow lemon */
@@ -475,7 +485,8 @@ function pack(mode){
       let dx=(b.x+b.w/2)-(a.x+a.w/2), dy=(b.y+b.h/2)-(a.y+a.h/2);
       const ox=(a.w+b.w)/2-Math.abs(dx), oy=(a.h+b.h)/2-Math.abs(dy);
       // NO overlap anywhere — every tile keeps a clear gap (same project 8px, across projects 18px).
-      const al = (a.key===b.key) ? -4 : -12;
+      const al = (a.card&&b.card&&a.key===b.key) ? -20    // profile + CV: keep them a bit apart
+               : (a.key===b.key) ? -4 : -12;
       if(ox>al&&oy>al){                                         // push apart RADIALLY (along centre-line) — organic, no axis-snapping
         let len=Math.hypot(dx,dy); if(len<0.5){dx=rnd(-1,1);dy=rnd(-1,1);len=Math.hypot(dx,dy)||1;}
         const pen=(Math.min(ox,oy)-al)*0.5, ux=dx/len, uy=dy/len;
