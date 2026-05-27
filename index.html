@@ -70,7 +70,7 @@ body{font-family:var(--sans);background:#fff;color:var(--ink);-webkit-font-smoot
 .tcard .name{font-family:var(--serif);font-size:24px;font-weight:600;line-height:1.04;}
 .phead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:2px;}
 .avatar-emo{font-size:40px;line-height:1;flex:0 0 auto;}
-.tcard .motto{font-family:'Noto Serif SC',serif;font-size:12.5px;color:#22d38e;letter-spacing:.3em;margin-top:8px;font-weight:600;}
+.tcard .motto{font-family:'Noto Serif SC',serif;font-size:12.5px;color:#e9e6dd;letter-spacing:.3em;margin-top:9px;font-weight:600;}
 .tcard .role0{font-size:12.5px;color:var(--mid);margin-top:5px;line-height:1.45;}
 .tcard .meta{margin-top:11px;font-size:11px;color:#444;line-height:1.55;border-top:1px solid var(--line);padding-top:10px;}
 .tcard .meta b{font-weight:600;}
@@ -397,8 +397,8 @@ const tiles=[]; // flat, EQUAL-RANK list of every card & image
 (function(){
   const card=document.createElement('div');card.className='card tcard profile';card.style.setProperty('--stick','#ECE8DB');
   card.innerHTML=`<div class="name">Haocheng Wang</div>
-    <div class="motto">博观约取</div>
     <div class="role0">An explorer drawn to structured, constraint-guided learning.</div>
+    <div class="motto">博观约取</div>
     <div class="meta"><b>Now</b> · M.Computing in Applied AI, NTU Singapore · GPA 4.63/5.0<br><b>Before</b> · Project Architect, Yanfei Architects (2018–24)</div>
     <div class="links" id="plinks"></div>`;
   stage.appendChild(card);
