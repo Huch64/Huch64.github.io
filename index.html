@@ -403,7 +403,7 @@ const tiles=[]; // flat, EQUAL-RANK list of every card & image
     <div class="links" id="plinks"></div>`;
   stage.appendChild(card);
   const pl=card.querySelector('#plinks');
-  [['gh','GitHub','https://github.com/Huch64'],['mail','Email','mailto:hwang051@e.ntu.edu.sg'],['doc','CV','docs/Wang_Haocheng_CV.pdf']].forEach(l=>{
+  [['gh','GitHub','https://github.com/Huch64'],['mail','Email','mailto:hwang051@e.ntu.edu.sg'],['doc','CV','docs/WangHaocheng_CV.pdf']].forEach(l=>{
     const a=document.createElement('a');a.className='icn';
     if(l[0]==='doc'){a.href='#';a.addEventListener('click',e=>{e.preventDefault();openCV();});}
     else{a.href=l[2];a.target='_blank';}
@@ -615,7 +615,7 @@ function openImg(pi,idx){
 }
 function openCV(){   // CV embedded in-page (no new tab); iframe always reflects the current PDF
   curSingle=null;
-  gwrap.innerHTML=`<div class="cvwrap"><iframe class="cvframe" src="docs/Wang_Haocheng_CV.pdf#view=FitH" title="CV — Wang Haocheng"></iframe></div>`;
+  gwrap.innerHTML=`<div class="cvwrap"><iframe class="cvframe" src="docs/WangHaocheng_CV.pdf#view=FitH" title="CV — Wang Haocheng"></iframe></div>`;
   gov.classList.add('open');document.body.style.overflow='hidden';gov.scrollTop=0;
 }
 function closeG(){gov.classList.remove('open');document.body.style.overflow='';curSingle=null;}
