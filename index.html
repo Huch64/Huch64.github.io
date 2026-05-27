@@ -147,6 +147,7 @@ body{font-family:var(--sans);background:#fff;color:var(--ink);-webkit-font-smoot
 .ghead .gi{font-size:13px;color:var(--mid);margin-top:6px;line-height:1.62;}
 .ghead .gi b{color:var(--ink);font-weight:600;}
 .ghead .grole{font-family:var(--mono);font-size:11px;color:var(--mid);margin-top:8px;}
+.ghead .gteam{font-family:var(--mono);font-size:11px;color:var(--light);margin-top:3px;}
 .ghead .gstack{margin-top:9px;display:flex;flex-wrap:wrap;gap:5px;}
 .ghead .gstack span{font-family:var(--mono);font-size:9.5px;font-weight:500;background:#F1F0EC;border-radius:3px;padding:3px 7px;}
 .ghead .glinks{margin-top:10px;display:flex;gap:12px;}
@@ -278,6 +279,8 @@ function mkLogo(ic,size){const cv=document.createElement('canvas');cv.width=24;c
 const CAT={AI:{c:'#2D7FF9',label:'AI / ML'},'Data & Space':{c:'#10B981',label:'Data & Space'},Built:{c:'#F5A623',label:'Built'}};
 const STICK={AI:'#FCEFA1','Data & Space':'#CFE9D7',Built:'#F8DCB2'};   // soft sticky-note tones per category
 const ROLES={'01':'agentic workflow &amp; data-structure design, frontend &amp; interaction, responsible AI · team of 4','02':'MDP formulation, UI &amp; game-mechanics design, reward shaping · team of 2','03':'EDA, cleaning &amp; feature engineering, experiment design, viz &amp; bias diagnosis · team of 4','04':'narrative framing, visualization &amp; algorithm design · team of 4','05':'pipeline, distillation, eval · individual','06':'full pipeline & write-up · individual','07':'research & visualization','08':'research & visualization','09':'project architect · SD→CD, on-site','10':'concept & form-finding'};
+// collaborators: surname kept, given name abbreviated (privacy: not directly searchable). self omitted.
+const TEAM={'01':'S. Wang, R. Wang, C. Tong','02':'Z. Lin','03':'S. Feng, W. Liu, D. Zhang','04':'D. Wang, K. Wang, Q. Wang'};
 // one-line functional subtitle under the (evocative) title, so the codename is instantly legible
 const SUBS={'01':'Sentence-grounded paper Q&A agents','02':'RL furniture layout, from a reward alone','03':'Data governance — profiling, cleaning & mining a census dataset','04':'Clustering London households by energy use','05':'Depression screening via knowledge distillation','06':'Next-hour highway traffic forecasting','07':'Mapping a reservoir’s water-level zone — GIS + image mining','08':'Hundreds of residential floor plans, superimposed','09':'A built 62,000 m² school','10':'Stacking winter sport into a vertical complex'};
 const EMO={'01':'🌈','02':'🛏️','03':'⚖️','04':'⚡','05':'🙍🏻‍♂️','06':'🚗','07':'🌊','08':'🏠','09':'🏫','10':'🎿'};
@@ -569,7 +572,7 @@ function headBody(p){const pi=+p.n-1;
   const links=projLinks(p).map(l=> l[1]===DOC[p.n]
     ? `<a href="#" onclick="openDoc(${pi});return false;">${l[0]}</a>`
     : `<a href="${l[1]}" target="_blank">${l[0]} ↗</a>`).join('');
-  return `<div><h2>${p.t}</h2>${SUBS[p.n]?`<div class="gsub">${SUBS[p.n]}</div>`:''}<div class="gi">${DESC[p.n]||p.intro}</div><div class="grole">Role · ${ROLES[p.n]}</div>
+  return `<div><h2>${p.t}</h2>${SUBS[p.n]?`<div class="gsub">${SUBS[p.n]}</div>`:''}<div class="gi">${DESC[p.n]||p.intro}</div><div class="grole">Role · ${ROLES[p.n]}</div>${TEAM[p.n]?`<div class="gteam">With · ${TEAM[p.n]}</div>`:''}
     <div class="gstack">${p.stack.map(s=>`<span>${s}</span>`).join('')}</div>
     ${links?`<div class="glinks">${links}</div>`:''}</div>`;}
 function openGallery(pi,start){
