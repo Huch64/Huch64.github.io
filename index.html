@@ -370,7 +370,7 @@ const tiles=[]; // flat, EQUAL-RANK list of every card & image
 /* build profile card */
 (function(){
   const card=document.createElement('div');card.className='card tcard profile';card.style.setProperty('--stick','#ECE8DB');
-  card.innerHTML=`<div class="phead"><div class="name">Haocheng Wang</div><span class="avatar-emo">💆🏻‍♂️</span></div>
+  card.innerHTML=`<div class="name">Haocheng Wang</div>
     <div class="role0">An explorer drawn to structured, constraint-guided learning.</div>
     <div class="links" id="plinks"></div>`;
   stage.appendChild(card);
@@ -485,8 +485,7 @@ function pack(mode){
       let dx=(b.x+b.w/2)-(a.x+a.w/2), dy=(b.y+b.h/2)-(a.y+a.h/2);
       const ox=(a.w+b.w)/2-Math.abs(dx), oy=(a.h+b.h)/2-Math.abs(dy);
       // NO overlap anywhere — every tile keeps a clear gap (same project 8px, across projects 18px).
-      const al = (a.card&&b.card&&a.key===b.key) ? -20    // profile + CV: keep them a bit apart
-               : (a.key===b.key) ? -4 : -12;
+      const al = (a.key===b.key) ? -4 : -12;
       if(ox>al&&oy>al){                                         // push apart RADIALLY (along centre-line) — organic, no axis-snapping
         let len=Math.hypot(dx,dy); if(len<0.5){dx=rnd(-1,1);dy=rnd(-1,1);len=Math.hypot(dx,dy)||1;}
         const pen=(Math.min(ox,oy)-al)*0.5, ux=dx/len, uy=dy/len;
@@ -499,6 +498,11 @@ function pack(mode){
     n.el.style.display='';n.el.style.left=n.x+'px';n.el.style.top=n.y+'px';n.el.style.transform=`rotate(${n.rot}deg)`;
     n.el.style.opacity='1';n.el.style.pointerEvents='';
     n.el.style.zIndex=n.el.classList.contains('tcard')?80:20;maxY=Math.max(maxY,n.y+n.h);});
+  // keep profile + Résumé as a clean LEFT-ALIGNED vertical stack (CV directly below profile)
+  const pc=stage.querySelector('.tcard.profile'),cc=stage.querySelector('.tcard.cvcard');
+  if(pc&&cc){const px=parseFloat(pc.style.left)||0,py=parseFloat(pc.style.top)||0;
+    cc.style.left=px+'px';cc.style.top=(py+pc.offsetHeight+16)+'px';
+    maxY=Math.max(maxY,py+pc.offsetHeight+16+cc.offsetHeight);}
   stage.style.height=(maxY+120)+'px';
 }
 /* tidy view — file every key-image into its project card (folder feel) */
