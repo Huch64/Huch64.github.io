@@ -449,7 +449,7 @@ P.forEach((p,pi)=>{
     el.dataset.wt=m.v?(isHero?'vh':'v'):(isHero?'h':(m.w||infoWeight(m)));el.style.width=(m.v?VID:WSIZE[el.dataset.wt]||WSIZE[3])+'px';
     if(m.v){const v=document.createElement('video');v.src=encodeURI(m.v);v.muted=true;v.loop=true;v.playsInline=true;v.preload='metadata';v.setAttribute('muted','');el.appendChild(v);
       el.dataset.isvid='1';}                       // metadata-only on load (dimensions for layout); vio plays+fetches when scrolled into view
-    else{const im=document.createElement('img');im.src=encodeURI(m.i);im.loading='lazy';im.decoding='async';im.alt=m.cap||p.t;el.appendChild(im);}
+    else{const im=document.createElement('img');im.src=encodeURI(m.i);im.decoding='async';im.alt=m.cap||p.t;el.appendChild(im);}
     if(m.cap){const cp=document.createElement('span');cp.className='shotcap';cp.textContent=m.cap;el.appendChild(cp);}
     el.onclick=()=>openImg(pi,idx);
     stage.appendChild(el);tiles.push({el,cat:p.cat,pi});
