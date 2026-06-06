@@ -299,6 +299,12 @@ const DESC={
 // hosted PDFs in docs/ (coursework only; n06 traffic is a written report, rest are decks)
 const DOC={'01':'docs/CA6123_Assignment_Prism.pdf','02':'docs/CA6126_RL_assignment_myLittleBedroom.pdf','03':'docs/CA6003_Grp24_Presentation.pdf','04':'docs/CA6002_Assignment_Group32.pdf','05':'docs/CA6001_Student_Depression_H.Wang.pdf','06':'docs/CA6000_Traffic_Forecasting_H.Wang.pdf'};
 const DOCPAGES={'01':10,'02':19,'03':12,'04':19,'05':12,'06':11};   // page-image counts in docs/pages/<n>/
+// GitHub Pages is throttled on some routes (~60KB/s here); jsDelivr mirrors the public repo ~18× faster.
+// Serve heavy media/docs through it; leave the HTML on github.io. To force-refresh after updating an asset:
+// https://purge.jsdelivr.net/gh/Huch64/Huch64.github.io@main/<path>
+const CDNB='https://cdn.jsdelivr.net/gh/Huch64/Huch64.github.io@main/';
+const CDN=p=>/^(https?:|mailto:|#|data:|\/)/.test(p)?p:CDNB+p;   // repo-relative assets/docs → CDN; absolute/mailto/# untouched
+const U=p=>CDN(encodeURI(p));                                    // encoded media src
 function projLinks(p){const a=p.links.slice(); if(DOC[p.n])a.push([(p.n==='06'?'Report':'Slides'),DOC[p.n]]); return a;}
 
 const P=[
@@ -431,7 +437,7 @@ P.forEach((p,pi)=>{
   const card=document.createElement('div');card.className='card tcard proj';
   card.innerHTML=`<div class="hd"><span class="hemoji">${EMO[p.n]||''}</span><div><div class="tt">${p.t}</div>${SUBS[p.n]?`<div class="sub">${SUBS[p.n]}</div>`:''}</div></div>
     <div class="stack">${p.stack.map(s=>`<span>${s}</span>`).join('')}</div>`;
-  card.style.cursor='pointer';card.onclick=()=>{(p.detail==='pdf'&&DOC[p.n])?window.open(DOC[p.n],'_blank'):openGallery(pi,0);};
+  card.style.cursor='pointer';card.onclick=()=>{(p.detail==='pdf'&&DOC[p.n])?window.open(CDN(DOC[p.n]),'_blank'):openGallery(pi,0);};
   card.dataset.pi=pi;card.style.setProperty('--cat',CAT[p.cat].c);card.style.setProperty('--stick',STICK[p.cat]);
   card.addEventListener('mouseenter',()=>hl(pi,1));card.addEventListener('mouseleave',()=>hl(pi,0));
   const defs=projLinks(p);
@@ -447,9 +453,9 @@ P.forEach((p,pi)=>{
     const isHero=m.r==='hero';                  // hero/ folder → biggest
     const el=document.createElement('div');el.className='shot'+(isHero?' hero':'');el.dataset.pi=pi;
     el.dataset.wt=m.v?(isHero?'vh':'v'):(isHero?'h':(m.w||infoWeight(m)));el.style.width=(m.v?VID:WSIZE[el.dataset.wt]||WSIZE[3])+'px';
-    if(m.v){const v=document.createElement('video');v.src=encodeURI(m.v);v.muted=true;v.loop=true;v.playsInline=true;v.preload='metadata';v.setAttribute('muted','');el.appendChild(v);
+    if(m.v){const v=document.createElement('video');v.src=U(m.v);v.muted=true;v.loop=true;v.playsInline=true;v.preload='metadata';v.setAttribute('muted','');el.appendChild(v);
       el.dataset.isvid='1';}                       // metadata-only on load (dimensions for layout); vio plays+fetches when scrolled into view
-    else{const im=document.createElement('img');im.src=encodeURI(m.i);im.decoding='async';im.alt=m.cap||p.t;el.appendChild(im);}
+    else{const im=document.createElement('img');im.src=U(m.i);im.decoding='async';im.alt=m.cap||p.t;el.appendChild(im);}
     if(m.cap){const cp=document.createElement('span');cp.className='shotcap';cp.textContent=m.cap;el.appendChild(cp);}
     el.onclick=()=>openImg(pi,idx);
     stage.appendChild(el);tiles.push({el,cat:p.cat,pi});
@@ -578,12 +584,12 @@ function headBody(p){const pi=+p.n-1;
 function openGallery(pi,start){
   curSingle=null;
   const p=P[pi];
-  const figs=p.imgs.map((m,i)=>{const inner=m.v?`<video src="${encodeURI(m.v)}" muted loop autoplay playsinline></video>`:`<img src="${encodeURI(m.i)}" loading="lazy" alt="${(m.cap||p.t).replace(/"/g,'&quot;')}">`;
+  const figs=p.imgs.map((m,i)=>{const inner=m.v?`<video src="${U(m.v)}" muted loop autoplay playsinline></video>`:`<img src="${U(m.i)}" loading="lazy" alt="${(m.cap||p.t).replace(/"/g,'&quot;')}">`;
     return `<figure class="gfig" id="gf${i}" onclick="openImg(${pi},${i})"><div class="gimg">${inner}</div>${m.cap?`<figcaption>${m.cap}</figcaption>`:''}</figure>`;}).join('');
   // append the full slides / report inline, after the curated figures (lazy-loaded so it stays light)
   let docsec='';
   if(DOC[p.n]){const np=DOCPAGES[p.n]||0;let pages='';
-    for(let i=1;i<=np;i++)pages+=`<img class="docpg" src="docs/pages/${p.n}/${String(i).padStart(2,'0')}.webp" loading="lazy" alt="page ${i}">`;
+    for(let i=1;i<=np;i++)pages+=`<img class="docpg" src="${CDN('docs/pages/'+p.n+'/'+String(i).padStart(2,'0')+'.webp')}" loading="lazy" alt="page ${i}">`;
     docsec=`<div class="gdocsec" id="gdocsec"><div class="gdivider">Full ${p.n==='06'?'report':'slides'} · ${np} pages ↓</div><div class="gdoc">${pages}</div></div>`;}
   gwrap.innerHTML=`<div class="ghead"></div><div class="gfigs">`+figs+`</div>`+docsec;
   const gh=gwrap.querySelector('.ghead');gh.insertAdjacentHTML('beforeend','<span class="gemoji">'+(EMO[p.n]||'')+'</span>');gh.insertAdjacentHTML('beforeend',headBody(p));
@@ -597,7 +603,7 @@ function openGallery(pi,start){
 function openDoc(pi){
   curSingle=null;
   const p=P[pi], np=DOCPAGES[p.n]||0; let pages='';
-  for(let i=1;i<=np;i++)pages+=`<img class="docpg" src="docs/pages/${p.n}/${String(i).padStart(2,'0')}.webp" loading="lazy" alt="page ${i}">`;
+  for(let i=1;i<=np;i++)pages+=`<img class="docpg" src="${CDN('docs/pages/'+p.n+'/'+String(i).padStart(2,'0')+'.webp')}" loading="lazy" alt="page ${i}">`;
   gwrap.innerHTML=`<div class="ghead"></div><div class="gdoc">${pages}</div>`;
   const gh=gwrap.querySelector('.ghead');gh.insertAdjacentHTML('beforeend','<span class="gemoji">'+(EMO[p.n]||'')+'</span>');gh.insertAdjacentHTML('beforeend',headBody(p));
   gov.classList.add('open');document.body.style.overflow='hidden';gov.scrollTop=0;
@@ -605,7 +611,7 @@ function openDoc(pi){
 let curSingle=null;   // {pi,idx,n} when the single-image view is open (drives ←/→ keys)
 function openImg(pi,idx){
   const p=P[pi], m=p.imgs[idx], n=p.imgs.length;curSingle={pi,idx,n};
-  const media=m.v?`<video src="${encodeURI(m.v)}" muted loop autoplay playsinline></video>`:`<img src="${encodeURI(m.i)}" alt="${(m.cap||p.t).replace(/"/g,'&quot;')}">`;
+  const media=m.v?`<video src="${U(m.v)}" muted loop autoplay playsinline></video>`:`<img src="${U(m.i)}" alt="${(m.cap||p.t).replace(/"/g,'&quot;')}">`;
   gwrap.innerHTML=`<div class="single"><div class="simg">${media}</div>
     ${m.cap?`<div class="scap">${m.cap}</div>`:''}
     <div class="sfoot"><span class="sp">${p.t}</span><span>${idx+1} / ${n}</span>
@@ -615,7 +621,7 @@ function openImg(pi,idx){
 }
 function openCV(){   // CV embedded in-page (no new tab); iframe always reflects the current PDF
   curSingle=null;
-  gwrap.innerHTML=`<div class="cvwrap"><iframe class="cvframe" src="docs/WangHaocheng_CV.pdf#view=FitH" title="CV — Wang Haocheng"></iframe></div>`;
+  gwrap.innerHTML=`<div class="cvwrap"><iframe class="cvframe" src="${CDN('docs/WangHaocheng_CV.pdf')}#view=FitH" title="CV — Wang Haocheng"></iframe></div>`;
   gov.classList.add('open');document.body.style.overflow='hidden';gov.scrollTop=0;
 }
 function closeG(){gov.classList.remove('open');document.body.style.overflow='';curSingle=null;}
