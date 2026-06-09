@@ -287,14 +287,14 @@ const EMO={'01':'🌈','02':'🛏️','03':'⚖️','04':'⚡','05':'🙍🏻‍
 // fuller narrative shown in the gallery header (so a viewer actually understands the project)
 const DESC={
  '01':'LLM answers about papers are easy to doubt and hard to verify. PRISM runs a five-agent pipeline that writes an answer and then pins every claim to the exact source sentence, behind five layers of guardrails — so each claim links back to where it came from, and all 13 safety probes pass.',
- '02':'A furnished room has no single “correct” layout to imitate, so there is nothing to supervise on. Instead a MaskablePPO agent learns from a reward encoding architectural common sense — accessibility, privacy, circulation — with zero demonstrations, reaching 2.4× a random policy and growing its own spatial grammar that carries over to unseen rooms.',
+ '02':'A furnished room has no single “correct” layout to imitate, so there is nothing to supervise on. Instead a MaskablePPO agent learns from a reward encoding a few architectural rules of thumb — accessibility, privacy, circulation — with zero demonstrations, reaching 2.4× a random baseline and settling into consistent placement patterns that carry over to unseen rooms.',
  '03':'A data-governance study of the 1994 UCI Adult Census: profile, clean, explore and mine the data, treating ML models as evidence of data quality rather than the goal. Probing subgroups surfaced the “Marriage Trap” — single minority women are wrongly rejected 9.74× more often, with marriage standing in as a proxy for merit, and every fairness fix trades recall against equity.',
  '04':'“Average” energy profiles hide how differently households actually live. Engineering five features from London smart-meter data and comparing two preprocessing pathways before K-Means resolves 5,556 households into four energy archetypes — and a simple log transform beat Yeo-Johnson on every metric.',
  '05':'Depression screening usually leans on long, intrusive questionnaires. Distilling a 46-feature teacher into a student that reads only 10 non-intrusive behavioral markers lifts held-out recall from 55% to 88% — the distillation transfers the teacher’s decision geometry and quietly acts as a regularizer.',
  '06':'Forecasting next-hour highway traffic means wrestling with noisy, gap-ridden sensor data. A data-centric pipeline — gap-aware windows and cyclical time encoding feeding a SimpleRNN — cuts RMSE 35.6% below linear regression with fewer parameters, and clean data beats dropout.',
  '07':'A reservoir town’s waterline shifts with the seasons — so where does riverside life actually happen on that moving edge? Mining GIS terrain alongside thousands of sampled social-media images maps the water-level fluctuating zone into a data-driven atlas of riverside activity — spatial research done as an architect, before the AI degree.',
  '08':'How do people really live inside East-China high-rises, beyond the show flat? Superimposing and quantifying hundreds of residential floor plans collapses them into a single “ghost” — a density map of doors and stairs that reveals the shared patterns of everyday space.',
- '09':'A 62,000 m² school designed under dense regulatory code and a tight brief, resolved through multi-objective spatial optimization. As project architect I led it from SD through CD and on-site supervision; it was built, awarded First Prize, and published on ArchDaily.',
+ '09':'A 62,000 m² school worked out under dense regulatory code and a tight brief — coordinating structure, MEP and circulation to resolve their spatial conflicts within the rules. As project architect I led the schematic design, then stayed on through CD and construction as the design-side representative — involved end to end. It was built, awarded First Prize, and published on ArchDaily.',
  '10':'How do you fit winter sport onto a constrained urban site? Stacking ski-jump, rink and training into a vertical “boarding complex” through iterative form-finding turns a small footprint into a section — a schematic tower.'};
 // hosted PDFs in docs/ (coursework only; n06 traffic is a written report, rest are decks)
 const DOC={'01':'docs/CA6123_Assignment_Prism.pdf','02':'docs/CA6126_RL_assignment_myLittleBedroom.pdf','03':'docs/CA6003_Grp24_Presentation.pdf','04':'docs/CA6002_Assignment_Group32.pdf','05':'docs/CA6001_Student_Depression_H.Wang.pdf','06':'docs/CA6000_Traffic_Forecasting_H.Wang.pdf'};
@@ -315,12 +315,12 @@ const P=[
    {v:'assets/prism/topic-focus.mp4',w:2,cap:'Focus lens: the current sentence lights up as you read'},
    {v:'assets/prism/topic-ask-reflector.mp4',w:2,cap:'Ask → answer; thumbs-down → the reflector revises'},
    {i:'assets/prism/sys-tree.webp',g:1,cap:'Under the hood: two agent trees, one shared state — /analyze builds the context once, /ask dispatches tools per question'}]},
- {n:'02',cat:'AI',ic:'bed',t:'My Little Bedroom',intro:'An RL agent furnishes rooms from a reward alone — no demonstrations. Reaches <b>2.4× a random policy</b> and grows its own spatial grammar.',
+ {n:'02',cat:'AI',ic:'bed',t:'My Little Bedroom',intro:'An RL agent furnishes rooms from a reward alone — no demonstrations. Reaches <b>2.4× a random baseline</b> and settles into consistent placement patterns.',
   stack:['RL','MDP','MaskablePPO','Gymnasium'],links:[['Demo','https://huch64-mylittlebedroom.hf.space'],['Code','https://github.com/Huch64/CA6126_myLittleBedroom']],imgs:[
    {v:'assets/bedroom/demo.mp4',w:2,cap:'The trained agent furnishing a room, live'},
    {v:'assets/bedroom/interface.mp4',w:2,cap:'The reward, decomposed live — privacy · light · efficiency · diversity · compactness'},
-   {i:'assets/bedroom/spatial-grammar.webp',w:3,cap:'Emergent placement rules per furniture type'},
-   {i:'assets/bedroom/training-curve.webp',w:3,cap:'Learning curve — 2.4× a random policy'},
+   {i:'assets/bedroom/spatial-grammar.webp',w:3,cap:'Consistent placement patterns per furniture type'},
+   {i:'assets/bedroom/training-curve.webp',w:3,cap:'Learning curve — 2.4× a random baseline'},
    {i:'assets/bedroom/usage-difference.webp',cap:'Normalized occupancy &amp; category-usage differences'},
    {i:'assets/bedroom/training-heatmaps.webp',g:1,cap:'Spatial behaviour matures over training — bed & wardrobe heatmaps, 0.05M→2M steps'}]},
  {n:'03',cat:'AI',ic:'scale',t:'The Marriage Trap',intro:'A data-governance dig into the 1994 UCI Adult Census — profiling, cleaning, mining. It surfaced a “Marriage Trap”: single minority women are wrongly rejected <b>9.74×</b> more, marriage standing in as a proxy for merit.',
@@ -409,7 +409,7 @@ const tiles=[]; // flat, EQUAL-RANK list of every card & image
     <div class="links" id="plinks"></div>`;
   stage.appendChild(card);
   const pl=card.querySelector('#plinks');
-  [['gh','GitHub','https://github.com/Huch64'],['mail','Email','mailto:hwang051@e.ntu.edu.sg'],['doc','CV','docs/WangHaocheng_CV.pdf']].forEach(l=>{
+  [['gh','GitHub','https://github.com/Huch64'],['mail','Email','mailto:hwang051@e.ntu.edu.sg'],['doc','CV','docs/CV_WangHaocheng.pdf']].forEach(l=>{
     const a=document.createElement('a');a.className='icn';
     if(l[0]==='doc'){a.href='#';a.addEventListener('click',e=>{e.preventDefault();openCV();});}
     else{a.href=l[2];a.target='_blank';}
@@ -621,7 +621,7 @@ function openImg(pi,idx){
 }
 function openCV(){   // CV embedded in-page (no new tab); iframe always reflects the current PDF
   curSingle=null;
-  gwrap.innerHTML=`<div class="cvwrap"><iframe class="cvframe" src="${CDN('docs/WangHaocheng_CV.pdf')}#view=FitH" title="CV — Wang Haocheng"></iframe></div>`;
+  gwrap.innerHTML=`<div class="cvwrap"><iframe class="cvframe" src="${CDN('docs/CV_WangHaocheng.pdf')}#view=FitH" title="CV — Wang Haocheng"></iframe></div>`;
   gov.classList.add('open');document.body.style.overflow='hidden';gov.scrollTop=0;
 }
 function closeG(){gov.classList.remove('open');document.body.style.overflow='';curSingle=null;}
